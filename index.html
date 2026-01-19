@@ -6,78 +6,89 @@
     <title>ZEUS⚡️P2P</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
 
     <style>
-        /* --- ESTILOS GERAIS (CSS CRÍTICO) --- */
-        :root { --primary: #0ABAB5; --bg-dark: #020205; --text-main: #ffffff; }
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Outfit', sans-serif; }
-        body { background-color: var(--bg-dark); color: var(--text-main); height: 100vh; overflow: hidden; }
+        /* --- CSS CRÍTICO (Para carregar instantaneamente) --- */
+        :root { --primary: #0ABAB5; --bg-dark: #020205; --text-main: #ffffff; --glass: rgba(255,255,255,0.05); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-dark); color: var(--text-main); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
-        /* UTILITÁRIOS DE VISIBILIDADE */
-        .hidden { display: none !important; opacity: 0; }
+        /* UTILITÁRIOS */
+        .hidden { display: none !important; opacity: 0; pointer-events: none; }
         .fade-in { animation: fadeIn 0.5s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* SPLASH SCREEN (Raio) */
+        /* SPLASH SCREEN */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #020205; z-index: 9999;
+            background: #020205; z-index: 99999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.5s ease-out;
+            transition: opacity 0.5s ease;
         }
-        .hero-logo-animate { animation: heroFloat 3s ease-in-out infinite; }
-        @keyframes heroFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .loading-bar { width: 150px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 20px; overflow: hidden; }
+        .loading-progress { width: 100%; height: 100%; background: var(--primary); animation: load 2s infinite ease-in-out; transform-origin: left; }
+        @keyframes load { 0% { transform: scaleX(0); } 50% { transform: scaleX(1); } 100% { transform: scaleX(0); transform-origin: right; } }
 
-        /* RESTO DOS ESTILOS DO APP (Compactados para não quebrar) */
-        .btn-primary { background: linear-gradient(135deg, #0ABAB5, #0F52BA); color: #fff; border: none; padding: 16px; border-radius: 14px; font-weight: 600; width: 100%; margin-top:10px; }
-        .login-card { background: rgba(20, 20, 30, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 25px; margin-bottom: 20px; text-align: center; }
-        .login-avatar { width: 70px; height: 70px; border-radius: 50%; background: #333; margin: 0 auto 15px auto; border: 2px solid #0ABAB5; }
-        .custom-input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 10px; color: #fff; margin-bottom: 10px; }
+        /* ESTILOS DO APP */
+        .btn-primary { background: linear-gradient(135deg, #0ABAB5, #0F52BA); color: #fff; border: none; padding: 16px; border-radius: 14px; font-weight: 600; width: 100%; margin-top:10px; cursor: pointer; box-shadow: 0 4px 15px rgba(10, 186, 181, 0.3); }
+        .custom-input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); padding: 14px; border-radius: 12px; color: #fff; margin-bottom: 10px; outline: none; }
         
-        /* Dashboard e Telas Internas */
-        .screen-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .actions-menu { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 15px; }
-        .menu-item { display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 0.7rem; color: #aaa; }
-        .menu-btn { width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #fff; }
-        
-        /* Stats Card */
-        .stat-card-main { background: linear-gradient(180deg, rgba(0, 224, 150, 0.1), rgba(0,0,0,0)); border: 1px solid rgba(0, 224, 150, 0.3); border-radius: 20px; padding: 20px; margin: 15px; }
+        /* LOGIN */
+        .login-card { background: rgba(20, 20, 30, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 25px; margin-bottom: 20px; text-align: center; backdrop-filter: blur(10px); }
+        .login-avatar { width: 80px; height: 80px; border-radius: 50%; background: #222; margin: 0 auto 15px auto; border: 2px solid var(--primary); background-size: cover; background-position: center; }
+
+        /* DASHBOARD */
+        .screen-header { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; }
+        .stat-card-main { background: linear-gradient(180deg, rgba(0, 224, 150, 0.1), rgba(0,0,0,0)); border: 1px solid rgba(0, 224, 150, 0.3); border-radius: 24px; padding: 20px; margin: 0 20px 20px 20px; }
+        .actions-menu { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 20px; margin-bottom: 30px; }
+        .menu-item { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 0.75rem; color: #ccc; cursor: pointer; }
+        .menu-btn { width: 55px; height: 55px; background: rgba(255,255,255,0.08); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: #fff; transition: 0.2s; border: 1px solid rgba(255,255,255,0.05); }
+        .menu-btn:active { background: rgba(10, 186, 181, 0.2); border-color: var(--primary); }
+
+        /* TELAS INTERNAS */
+        .screen-content { padding: 20px; padding-bottom: 80px; overflow-y: auto; height: 100%; }
+        .back-btn { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .calc-card { background: rgba(255,255,255,0.03); border-radius: 16px; padding: 15px; margin: 15px 0; border: 1px solid rgba(255,255,255,0.1); }
+        .calc-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; color: #aaa; }
+        .val-display { font-weight: 700; color: #fff; font-family: 'Rajdhani'; }
+
+        /* EXTRAS */
+        .chip-grid { display: flex; gap: 8px; margin-bottom: 15px; }
+        .chip-btn { flex: 1; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px; text-align: center; font-size: 0.8rem; cursor: pointer; border: 1px solid transparent; }
+        .chip-btn.active { border-color: var(--primary); background: rgba(10, 186, 181, 0.15); color: var(--primary); }
     </style>
 </head>
 <body>
 
     <section id="splash-screen">
-        <div class="hero-logo-animate" style="width:120px; height:120px; background:linear-gradient(180deg, rgba(10,186,181,0.1), rgba(15,82,186,0.2)); border-radius:35px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,0.1); box-shadow:0 0 40px rgba(10,186,181,0.2);">
-            <i class="fas fa-bolt" style="font-size:4rem; color:#FFD700; filter:drop-shadow(0 0 20px rgba(255,215,0,0.5));"></i>
-        </div>
-        <p style="margin-top:20px; color:rgba(255,255,255,0.5); font-size:0.8rem;">Carregando sistema...</p>
+        <i class="fas fa-bolt" style="font-size:4rem; color:#FFD700; filter:drop-shadow(0 0 20px rgba(255,215,0,0.6)); margin-bottom: 20px;"></i>
+        <h2 style="font-family:'Rajdhani'; font-weight:700; letter-spacing: 2px;">ZEUS P2P</h2>
+        <div class="loading-bar"><div class="loading-progress"></div></div>
+        <p style="margin-top:10px; font-size:0.7rem; opacity:0.5;">Iniciando sistema seguro...</p>
     </section>
 
     <section id="login-screen" class="hidden">
         <div style="padding: 40px 20px; height: 100vh; display: flex; flex-direction: column; justify-content: center;">
             <div style="text-align:center; margin-bottom:40px;">
-                <i class="fas fa-bolt" style="font-size:3rem; color:#FFD700;"></i>
-                <h1 style="font-family:'Rajdhani'; margin-top:10px;">ZEUS P2P</h1>
+                <i class="fas fa-bolt" style="font-size:3.5rem; color:#FFD700; filter:drop-shadow(0 0 15px #FFD700);"></i>
+                <h1 style="font-family:'Rajdhani'; margin-top:10px; font-size: 2.2rem;">ZEUS P2P</h1>
             </div>
 
             <div class="login-card">
                 <div class="login-avatar" id="tg-avatar"></div>
-                <h3 id="tg-name">Usuário Telegram</h3>
+                <h3 id="tg-name" style="margin-bottom:5px;">Visitante</h3>
                 <p id="tg-id" style="font-size:0.8rem; color:#0ABAB5; margin-bottom:15px;">ID: ---</p>
-                <button class="btn-primary" onclick="goToDash()" style="background:#229ED9;">
+                <button class="btn-primary" onclick="enterApp('telegram')" style="background:#229ED9;">
                     <i class="fab fa-telegram"></i> Entrar com Telegram
                 </button>
             </div>
 
             <div class="login-card">
-                <input type="text" class="custom-input" placeholder="E-mail ou Usuário">
+                <h4 style="margin-bottom:15px; text-align:left; color:#ccc;"><i class="fas fa-envelope"></i> Acesso via E-mail</h4>
+                <input type="text" class="custom-input" placeholder="Usuário ou E-mail">
                 <input type="password" class="custom-input" placeholder="Senha">
-                <button class="btn-primary" onclick="goToDash()">Criar Conta / Entrar</button>
+                <button class="btn-primary" onclick="enterApp('email')">Entrar</button>
             </div>
         </div>
     </section>
@@ -85,75 +96,125 @@
     <section id="main-app" class="hidden">
         <div class="screen-header">
             <div><span style="font-size:0.8rem; color:#0ABAB5;">Bem-vindo,</span><h3 id="dash-name">Usuário</h3></div>
-            <i class="fas fa-bell" style="font-size:1.2rem;"></i>
+            <i class="fas fa-bell" style="font-size:1.2rem; opacity:0.8;"></i>
         </div>
         
         <div class="stat-card-main">
-            <p style="font-size:0.8rem; color:#00E096; letter-spacing:1px;">SALDO DISPONÍVEL</p>
-            <h1 style="font-family:'Rajdhani'; font-size:2.5rem; margin:10px 0;">R$ 14.250,90</h1>
+            <p style="font-size:0.8rem; color:#00E096; letter-spacing:1px; margin-bottom:5px;">SALDO DISPONÍVEL</p>
+            <h1 style="font-family:'Rajdhani'; font-size:2.8rem; margin:0;">R$ 14.250,90</h1>
         </div>
 
         <div class="actions-menu">
-            <div class="menu-item"><div class="menu-btn"><i class="fas fa-money-bill-transfer"></i></div>PIX</div>
-            <div class="menu-item"><div class="menu-btn"><i class="fas fa-barcode"></i></div>Boleto</div>
-            <div class="menu-item"><div class="menu-btn"><i class="fas fa-wallet"></i></div>Cripto</div>
-            <div class="menu-item"><div class="menu-btn"><i class="fas fa-headset"></i></div>Ajuda</div>
+            <div class="menu-item" onclick="openScreen('pix-withdraw')"><div class="menu-btn"><i class="fas fa-money-bill-transfer"></i></div><span>Sacar PIX</span></div>
+            <div class="menu-item" onclick="openScreen('charge-screen')"><div class="menu-btn"><i class="fas fa-hand-holding-dollar"></i></div><span>Cobrar</span></div>
+            <div class="menu-item" onclick="openScreen('boleto-screen')"><div class="menu-btn"><i class="fas fa-barcode"></i></div><span>Boleto</span></div>
+            <div class="menu-item" onclick="openScreen('crypto-withdraw')"><div class="menu-btn"><i class="fas fa-wallet"></i></div><span>Cripto</span></div>
+        </div>
+
+        <div style="padding: 0 20px;">
+            <h4 style="font-family:'Rajdhani'; margin-bottom:15px; opacity:0.8;">Recursos</h4>
+            <div style="background:rgba(255,255,255,0.03); border-radius:16px; padding:15px; display:flex; justify-content:space-between; margin-bottom:10px;">
+                <div style="display:flex; gap:15px; align-items:center;">
+                    <i class="fas fa-shield-alt" style="color:var(--primary); font-size:1.2rem;"></i>
+                    <div><div style="font-weight:600; font-size:0.9rem;">Segurança Total</div><div style="font-size:0.7rem; opacity:0.6;">Proteção criptografada</div></div>
+                </div>
+            </div>
+            <div style="background:rgba(255,255,255,0.03); border-radius:16px; padding:15px; display:flex; justify-content:space-between;">
+                <div style="display:flex; gap:15px; align-items:center;">
+                    <i class="fas fa-user-secret" style="color:var(--accent); font-size:1.2rem;"></i>
+                    <div><div style="font-weight:600; font-size:0.9rem;">Sem KYC</div><div style="font-size:0.7rem; opacity:0.6;">Anonimato garantido</div></div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <script>
-        // --- LÓGICA DE INICIALIZAÇÃO SEGURA ---
-        
-        // 1. Diz ao Telegram que o App está pronto
-        const tg = window.Telegram.WebApp;
-        tg.ready(); 
-        tg.expand(); // Tenta ocupar a tela toda
+    <section id="generic-screen" class="hidden">
+        <div class="screen-header">
+            <div class="back-btn" onclick="backToDash()"><i class="fas fa-arrow-left"></i></div>
+            <h3 id="generic-title">Ação</h3>
+        </div>
+        <div class="screen-content" style="text-align:center; padding-top:50px;">
+            <i class="fas fa-tools" style="font-size:3rem; color:#555; margin-bottom:20px;"></i>
+            <p>Funcionalidade carregada.</p>
+            <button class="btn-primary" onclick="backToDash()" style="max-width:200px; margin-top:20px;">Voltar</button>
+        </div>
+    </section>
 
-        function initApp() {
-            console.log("Iniciando App...");
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script>
+        // --- SISTEMA DE INICIALIZAÇÃO BLINDADO ---
+        let appLoaded = false;
+
+        // 1. Função Principal de Desbloqueio
+        function unlockApp() {
+            if (appLoaded) return; // Evita rodar duas vezes
+            appLoaded = true;
+
+            const splash = document.getElementById('splash-screen');
+            const login = document.getElementById('login-screen');
+
+            // Fade out splash
+            splash.style.opacity = '0';
             
-            // Tenta pegar dados do usuário
+            // Troca as telas
+            setTimeout(() => {
+                splash.classList.add('hidden');
+                login.classList.remove('hidden');
+                login.classList.add('fade-in');
+            }, 500);
+
+            // Tenta pegar dados do Telegram (Se falhar, não trava)
             try {
+                const tg = window.Telegram.WebApp;
+                tg.expand();
                 const user = tg.initDataUnsafe?.user;
-                if (user) {
-                    document.getElementById('tg-name').innerText = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+                if(user) {
+                    document.getElementById('tg-name').innerText = user.first_name;
                     document.getElementById('tg-id').innerText = "ID: " + user.id;
                     document.getElementById('dash-name').innerText = user.first_name;
+                    // Avatar Placeholder (Telegram não dá URL da foto direta na WebApp API pública)
+                    // document.getElementById('tg-avatar').style.backgroundImage = ...
                 }
-            } catch (e) {
-                console.error("Erro ao ler dados do Telegram", e);
-            }
-
-            // Remove a tela de Splash e mostra o Login
-            setTimeout(() => {
-                document.getElementById('splash-screen').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('splash-screen').classList.add('hidden');
-                    document.getElementById('login-screen').classList.remove('hidden');
-                    document.getElementById('login-screen').classList.add('fade-in');
-                }, 500);
-            }, 1500); // Aguarda 1.5s para dar tempo de carregar fontes
+            } catch(e) { console.log("Modo offline ou navegador comum."); }
         }
 
-        // 2. Event Listener Principal (Tenta carregar assim que o DOM estiver pronto)
-        document.addEventListener('DOMContentLoaded', initApp);
+        // 2. Gatilho Padrão (Quando tudo carrega)
+        window.addEventListener('load', () => {
+            setTimeout(unlockApp, 1500); // Aguarda 1.5s para efeito visual
+        });
 
-        // 3. FAILSAFE (Segurança Extrema)
-        // Se por algum motivo o evento acima falhar, força a abertura após 3 segundos
+        // 3. GATILHO DE EMERGÊNCIA (FAILSAFE)
+        // Se em 3.5 segundos o 'load' não disparar (internet lenta/erro de script), forçamos a abertura.
         setTimeout(() => {
-            const splash = document.getElementById('splash-screen');
-            if (!splash.classList.contains('hidden') && splash.style.opacity !== '0') {
-                console.log("Forçando abertura pelo Failsafe...");
-                initApp();
+            if (!appLoaded) {
+                console.log("Forçando abertura do App...");
+                unlockApp();
             }
-        }, 3000);
+        }, 3500);
 
-        // --- NAVEGAÇÃO ---
-        function goToDash() {
-            if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+        // --- NAVEGAÇÃO BÁSICA ---
+        function enterApp(method) {
+            if(window.Telegram?.WebApp?.HapticFeedback) window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('main-app').classList.remove('hidden');
             document.getElementById('main-app').classList.add('fade-in');
+        }
+
+        function backToDash() {
+            document.querySelectorAll('section').forEach(el => {
+                if(el.id !== 'main-app') el.classList.add('hidden');
+            });
+            document.getElementById('main-app').classList.remove('hidden');
+        }
+
+        function openScreen(type) {
+            // Simplificado para garantir funcionamento neste teste
+            // Para as telas reais (PIX, Boleto), você pode reativar o código completo anterior
+            // Aqui estou usando uma tela genérica para garantir que o menu funcione
+            alert("Abrindo funcionalidade: " + type); 
+            // Se quiser o código completo das telas, mantenha o HTML anterior das sections e use a lógica antiga de switch
         }
 
     </script>
