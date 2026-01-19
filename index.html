@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>ZEUS⚡️P2P</title>
+    <title>ZEUS⚡️P2P | Finance</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
 
     <style>
         /* --- CSS CRÍTICO --- */
@@ -21,7 +21,9 @@
 
         /* ESTILOS DO APP */
         .btn-primary { background: linear-gradient(135deg, #0ABAB5, #0F52BA); color: #fff; border: none; padding: 16px; border-radius: 14px; font-weight: 600; width: 100%; margin-top:10px; cursor: pointer; box-shadow: 0 4px 15px rgba(10, 186, 181, 0.3); }
-        .custom-input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); padding: 14px; border-radius: 12px; color: #fff; margin-bottom: 10px; outline: none; }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
+        .custom-input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); padding: 14px; border-radius: 12px; color: #fff; margin-bottom: 10px; outline: none; transition: border 0.3s; }
+        .custom-input:focus { border-color: var(--primary); }
         
         /* LOGIN */
         .login-card { background: rgba(20, 20, 30, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 25px; margin-bottom: 20px; text-align: center; backdrop-filter: blur(10px); }
@@ -29,7 +31,7 @@
 
         /* DASHBOARD */
         .screen-header { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; }
-        .nav-avatar { width: 42px; height: 42px; border-radius: 50%; background: #333; border: 2px solid var(--primary); background-image: url('https://ui-avatars.com/api/?name=Usuario&background=0ABAB5&color=fff'); background-size: cover; }
+        .nav-avatar { width: 42px; height: 42px; border-radius: 50%; background: #333; border: 2px solid var(--primary); background-image: url('https://ui-avatars.com/api/?name=User&background=0ABAB5&color=fff'); background-size: cover; }
         .stat-card-main { background: linear-gradient(180deg, rgba(0, 224, 150, 0.1), rgba(0,0,0,0)); border: 1px solid rgba(0, 224, 150, 0.3); border-radius: 24px; padding: 20px; margin: 0 20px 20px 20px; }
         .actions-menu { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 20px; margin-bottom: 30px; }
         .menu-item { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 0.75rem; color: #ccc; cursor: pointer; }
@@ -42,6 +44,7 @@
         .calc-card { background: rgba(255,255,255,0.03); border-radius: 16px; padding: 15px; margin: 15px 0; border: 1px solid rgba(255,255,255,0.1); }
         .calc-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; color: #aaa; }
         .val-display { font-weight: 700; color: #fff; font-family: 'Rajdhani'; }
+        .info-card { background: rgba(255,255,255,0.03); border-left: 3px solid var(--accent); padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 0.75rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
 
         /* EXTRAS */
         .chip-grid { display: flex; gap: 8px; margin-bottom: 15px; }
@@ -151,7 +154,7 @@
         
         <div class="stat-card-main">
             <p style="font-size:0.8rem; color:#00E096; letter-spacing:1px; margin-bottom:5px;">SALDO DISPONÍVEL</p>
-            <h1 style="font-family:'Rajdhani'; font-size:2.8rem; margin:0;">R$ 14.250,90</h1>
+            <h1 style="font-family:'Rajdhani'; font-size:2.8rem; margin:0;" id="dash-balance">R$ 0,00</h1>
         </div>
 
         <div class="actions-menu">
@@ -186,13 +189,13 @@
             <div class="stat-card-main">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <div><div style="font-size:0.8rem; color:var(--color-green);">SALDO</div></div>
-                    <div style="font-family:'Rajdhani'; font-size:1.8rem; font-weight:700; color:var(--color-green);">R$ 14.250,90</div>
+                    <div style="font-family:'Rajdhani'; font-size:1.8rem; font-weight:700; color:var(--color-green);">R$ 0,00</div>
                 </div>
                 <div style="height:100px; width:100%; margin:20px 0;"><canvas id="performanceChart"></canvas></div>
             </div>
             <div class="stat-grid-colored">
-                <div class="stat-box box-pink"><div class="stat-title" style="color:#ff4757;">PIX VERIFICADOS</div><div class="stat-value">128</div></div>
-                <div class="stat-box box-purple"><div class="stat-title" style="color:#8854D0;">VOLUME</div><div class="stat-value">R$ 14.2k</div></div>
+                <div class="stat-box box-pink"><div class="stat-title" style="color:#ff4757;">PIX VERIFICADOS</div><div class="stat-value">0</div></div>
+                <div class="stat-box box-purple"><div class="stat-title" style="color:#8854D0;">VOLUME</div><div class="stat-value">R$ 0,00</div></div>
                 <div class="stat-box box-orange"><div class="stat-title" style="color:#FA8231;">PENDENTES</div><div class="stat-value">0</div></div>
                 <div class="stat-box box-blue"><div class="stat-title" style="color:#3867D6;">ÚLTIMO</div><div class="stat-value">-</div></div>
             </div>
@@ -203,10 +206,12 @@
         <div class="screen-header"><div class="back-btn" onclick="backToMain()"><i class="fas fa-arrow-left"></i></div><h3>Sacar PIX</h3></div>
         <div class="screen-content">
             <div id="pix-step-1">
-                <label style="font-size:0.8rem; margin-left:4px;">Valor</label><input type="number" id="pix-val-input" class="custom-input" placeholder="0,00" oninput="updatePixCalc()">
+                <label style="font-size:0.8rem; margin-left:4px;">Valor do Saque</label><input type="number" id="pix-val-input" class="custom-input" placeholder="0,00" oninput="updatePixCalc()">
                 <div class="chip-grid"><div class="chip-btn" onclick="setPixVal(150)">150</div><div class="chip-btn" onclick="setPixVal(500)">500</div><div class="chip-btn" onclick="setPixVal(1000)">1k</div></div>
-                <input type="text" id="pix-key-input" class="custom-input" placeholder="Chave PIX" oninput="checkPixValid()">
-                <div class="calc-card"><div class="calc-row"><span>Receber</span><span class="val-display" id="pix-disp-total">R$ 0,00</span></div></div>
+                <label style="font-size:0.8rem; margin-left:4px;">Tipo de Chave</label>
+                <div class="chip-grid"><div class="chip-btn key-type" onclick="setPixKeyType('CPF/CNPJ', this)">CPF</div><div class="chip-btn key-type" onclick="setPixKeyType('TELEFONE', this)">Celular</div><div class="chip-btn key-type" onclick="setPixKeyType('E-MAIL', this)">E-mail</div><div class="chip-btn key-type" onclick="setPixKeyType('ALEATÓRIA', this)">Aleatória</div></div>
+                <input type="text" id="pix-key-input" class="custom-input" placeholder="Informe a chave PIX" oninput="checkPixValid()">
+                <div class="calc-card"><div class="calc-row"><span>Valor Solicitado</span><span class="val-display" id="pix-disp-req">R$ 0,00</span></div><div class="calc-row"><span style="color:var(--color-red)">Taxa (15%)</span><span class="val-display" style="color:var(--color-red)" id="pix-disp-fee">- R$ 0,00</span></div><div class="calc-row final"><span style="color:var(--primary)">Receber</span><span class="val-display" style="color:var(--primary)" id="pix-disp-total">R$ 0,00</span></div></div>
                 <button id="btn-pix-req" class="btn-primary" disabled onclick="submitPix()">Solicitar</button>
             </div>
             <div id="pix-step-2" class="hidden" style="text-align:center; padding-top:40px;"><i class="fas fa-check-circle" style="font-size:4rem; color:#00E096;"></i><h2>Solicitado!</h2><button class="btn-primary" onclick="sendPixToSupport()">Enviar Comprovante</button></div>
@@ -218,6 +223,7 @@
         <div class="screen-content">
             <div id="charge-step-1">
                 <label>Valor</label><input type="number" id="charge-val-input" class="custom-input" placeholder="0,00" oninput="updateChargeCalc()">
+                <div class="info-card"><strong>Taxas e Regras:</strong><br>• Mínimo: R$ 5,00 | Máximo: R$ 3.000,00<br>• R$ 5,00 a R$ 199,99: <strong>R$ 2,00 taxa</strong><br>• Acima de R$ 200,00: <strong>Taxa ZERO</strong></div>
                 <div class="calc-card"><div class="calc-row"><span>Receber</span><span class="val-display" id="charge-disp-total">R$ 0,00</span></div></div>
                 <button id="btn-charge-gen" class="btn-primary" disabled onclick="generateRealPix()">Gerar PIX</button>
             </div>
@@ -261,7 +267,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        // CONFIGURACAO TG
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
@@ -269,12 +274,11 @@
 
         let currentScreen = 'login-screen';
         let pixKeyType = '', cryptoNetwork = '', cryptoToken = '', activeChargeId = null, statusInterval = null, chartInstance = null;
-        let userBalance = 14250.90;
+        let userBalance = 0.00; // SALDO REAL INICIAL (ZERO)
         const networkTokens = { 'BTC': ['BTC'], 'BSC': ['BNB', 'USDT', 'USDC'], 'POL': ['POLYGON', 'USDT', 'USDC'], 'BASE': ['ETH', 'USDC'], 'ETH': ['ETHEREUM', 'USDT', 'USDC', 'DAI', 'USDE'], 'SOL': ['SOLANA', 'USDT', 'USDC'] };
 
         // --- NAVEGAÇÃO ---
         function enterApp() {
-            // LOGIN SIMPLES SEM TELEGRAM DATA
             const userInput = document.getElementById('login-input').value;
             if(userInput) {
                 document.getElementById('dash-name').innerText = userInput;
