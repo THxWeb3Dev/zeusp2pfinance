@@ -3,151 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>ZEUS⚡️P2P | Finance</title>
+    <title>ZEUS⚡️P2P</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <style>
-        :root {
-            --primary: #0ABAB5;
-            --secondary: #0F52BA;
-            --accent: #FFD700;
-            --bg-dark: #020205;
-            --glass-bg: rgba(20, 20, 30, 0.85);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --text-main: #ffffff;
-            --text-muted: rgba(255, 255, 255, 0.6);
-            --input-bg: rgba(0, 0, 0, 0.4);
-            
-            --color-green: #00E096;
-            --color-red: #FF4757;
-            --color-purple: #8854D0;
-            --color-orange: #FA8231;
-            --color-blue: #3867D6;
-        }
+        /* --- CSS CRÍTICO --- */
+        :root { --primary: #0ABAB5; --bg-dark: #020205; --text-main: #ffffff; --glass: rgba(255,255,255,0.05); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-dark); color: var(--text-main); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Outfit', sans-serif; }
-        body { background-color: var(--bg-dark); background: radial-gradient(circle at 50% 10%, #1a2a3a, #020205); color: var(--text-main); height: 100vh; overflow: hidden; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
-
-        /* UTILS */
-        .hidden { display: none !important; opacity: 0; }
-        .fade-in { animation: fadeIn 0.4s ease-in-out forwards; }
+        /* UTILITÁRIOS */
+        .hidden { display: none !important; opacity: 0; pointer-events: none; }
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* COMPONENTS */
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: #fff; border: none; padding: 16px 20px; border-radius: 14px; font-size: 1rem; font-weight: 600; width: 100%; cursor: pointer;
-            box-shadow: 0 8px 25px rgba(10, 186, 181, 0.25); transition: transform 0.2s, box-shadow 0.2s, opacity 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
-        .btn-primary:active { transform: scale(0.97); }
-        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); box-shadow: none; }
-        .btn-telegram { background: #229ED9; box-shadow: 0 8px 25px rgba(34, 158, 217, 0.3); }
-
-        .custom-input { width: 100%; background: var(--input-bg); border: 1px solid var(--glass-border); color: #fff; padding: 16px; border-radius: 12px; font-size: 0.95rem; outline: none; margin-bottom: 15px; transition: border-color 0.3s; }
-        .custom-input:focus { border-color: var(--primary); }
-
-        .back-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s; }
-        .back-btn:active { background: rgba(255,255,255,0.2); }
-
-        .screen-header { padding: 20px 24px; display: flex; align-items: center; gap: 15px; }
-        .screen-content { padding: 0 20px 80px 20px; overflow-y: auto; height: calc(100vh - 80px); }
-
-        /* CHIPS */
-        .chip-grid { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-        .chip-btn {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
-            padding: 10px 12px; font-size: 0.8rem; color: #fff; cursor: pointer; transition: all 0.2s; flex: 1; text-align: center; min-width: 60px;
-        }
-        .chip-btn.active { background: rgba(10, 186, 181, 0.2); border-color: var(--primary); color: var(--primary); font-weight: 600; }
-
-        /* CARDS */
-        .calc-card { background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 16px; padding: 15px 20px; margin-bottom: 25px; }
-        .calc-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-muted); }
-        .calc-row.final { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; margin-top: 12px; color: #fff; font-weight: 600; font-size: 1.1rem; }
-        .val-display { font-family: 'Rajdhani', sans-serif; font-weight: 700; }
+        /* ESTILOS DO APP */
+        .btn-primary { background: linear-gradient(135deg, #0ABAB5, #0F52BA); color: #fff; border: none; padding: 16px; border-radius: 14px; font-weight: 600; width: 100%; margin-top:10px; cursor: pointer; box-shadow: 0 4px 15px rgba(10, 186, 181, 0.3); }
+        .custom-input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); padding: 14px; border-radius: 12px; color: #fff; margin-bottom: 10px; outline: none; }
         
-        .info-card { background: rgba(255,255,255,0.03); border-left: 3px solid var(--accent); padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; }
-        .info-card strong { color: #fff; }
+        /* LOGIN */
+        .login-card { background: rgba(20, 20, 30, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 25px; margin-bottom: 20px; text-align: center; backdrop-filter: blur(10px); }
+        .login-title { font-family: 'Rajdhani'; font-weight: 700; font-size: 1.2rem; margin-bottom: 20px; text-align: left; display: flex; align-items: center; gap: 10px; color: #fff; }
 
-        /* LOGIN CARDS (New) */
-        .login-card {
-            background: rgba(20, 20, 30, 0.6);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 24px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            display: flex; flex-direction: column; align-items: center;
-            border-top: 1px solid rgba(255,255,255,0.15);
-        }
-        .login-avatar {
-            width: 70px; height: 70px; border-radius: 50%;
-            background: #333; border: 2px solid var(--primary);
-            background-size: cover; margin-bottom: 15px;
-            box-shadow: 0 0 20px rgba(10, 186, 181, 0.3);
-        }
-        .login-title { font-family: 'Rajdhani'; font-weight: 700; font-size: 1.2rem; margin-bottom: 20px; width: 100%; text-align: left; display: flex; align-items: center; gap: 10px; }
+        /* DASHBOARD */
+        .screen-header { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-avatar { width: 42px; height: 42px; border-radius: 50%; background: #333; border: 2px solid var(--primary); background-image: url('https://ui-avatars.com/api/?name=Usuario&background=0ABAB5&color=fff'); background-size: cover; }
+        .stat-card-main { background: linear-gradient(180deg, rgba(0, 224, 150, 0.1), rgba(0,0,0,0)); border: 1px solid rgba(0, 224, 150, 0.3); border-radius: 24px; padding: 20px; margin: 0 20px 20px 20px; }
+        .actions-menu { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 20px; margin-bottom: 30px; }
+        .menu-item { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 0.75rem; color: #ccc; cursor: pointer; }
+        .menu-btn { width: 55px; height: 55px; background: rgba(255,255,255,0.08); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: #fff; transition: 0.2s; border: 1px solid rgba(255,255,255,0.05); }
+        .menu-btn:active { background: rgba(10, 186, 181, 0.2); border-color: var(--primary); }
 
-        /* NETWORK GRID */
-        .networks-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-        .net-card {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px 5px; text-align: center; cursor: pointer; transition: all 0.2s; position: relative;
-        }
-        .net-card.active { border-color: var(--primary); background: rgba(10, 186, 181, 0.15); box-shadow: 0 0 15px rgba(10, 186, 181, 0.2); }
-        .net-name { display: block; font-family: 'Rajdhani'; font-weight: 700; font-size: 0.9rem; color: #fff; }
-        .net-token { font-size: 0.7rem; color: var(--primary); display: block; margin-top: 2px; }
+        /* TELAS INTERNAS */
+        .screen-content { padding: 20px; padding-bottom: 80px; overflow-y: auto; height: 100%; }
+        .back-btn { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .calc-card { background: rgba(255,255,255,0.03); border-radius: 16px; padding: 15px; margin: 15px 0; border: 1px solid rgba(255,255,255,0.1); }
+        .calc-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; color: #aaa; }
+        .val-display { font-weight: 700; color: #fff; font-family: 'Rajdhani'; }
 
-        /* TOKEN MODAL */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 500;
-            display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        /* EXTRAS */
+        .chip-grid { display: flex; gap: 8px; margin-bottom: 15px; }
+        .chip-btn { flex: 1; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px; text-align: center; font-size: 0.8rem; cursor: pointer; border: 1px solid transparent; }
+        .chip-btn.active { border-color: var(--primary); background: rgba(10, 186, 181, 0.15); color: var(--primary); }
+
+        /* MODALS */
+        .modal-overlay, .rules-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.9); z-index: 9999; 
+            display: flex; align-items: center; justify-content: center; 
+            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+        .rules-card {
+            background: rgba(20, 20, 30, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px; padding: 25px; width: 90%; max-width: 380px; max-height: 80vh;
+            overflow-y: auto; transform: rotateX(10deg); transition: transform 0.4s;
         }
         .modal-content {
             background: #1a1a20; width: 100%; max-width: 450px; border-top-left-radius: 25px; border-top-right-radius: 25px;
-            padding: 25px; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); border-top: 1px solid var(--glass-border);
-        }
-        .modal-title { font-family: 'Rajdhani'; font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; text-align: center; }
-        .token-list { display: flex; flex-direction: column; gap: 10px; }
-        .token-item {
-            padding: 15px; background: rgba(255,255,255,0.05); border-radius: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer;
-        }
-        .token-item:active { background: rgba(255,255,255,0.1); }
-
-        /* RULES MODAL (3D Glass) */
-        .rules-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.9); z-index: 600;
-            display: flex; align-items: center; justify-content: center; 
-            opacity: 0; pointer-events: none; transition: opacity 0.3s;
-            padding: 20px; perspective: 1000px;
-        }
-        .rules-card {
-            background: rgba(20, 20, 30, 0.65);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 24px;
-            padding: 25px;
-            width: 100%;
-            max-width: 380px;
-            max-height: 80vh;
-            overflow-y: auto;
-            transform: rotateX(10deg);
-            transition: transform 0.4s;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            padding: 25px; transform: translateY(100%); transition: transform 0.3s; border-top: 1px solid var(--glass);
+            position: absolute; bottom: 0;
         }
         .rules-content p { font-size: 0.85rem; color: #ddd; margin-bottom: 12px; line-height: 1.5; }
         .rules-content h4 { color: var(--accent); margin-top: 15px; margin-bottom: 8px; font-family: 'Rajdhani'; }
-        
-        /* QR AREA */
-        .qr-area { background: #fff; padding: 15px; border-radius: 20px; width: 220px; height: 220px; margin: 0 auto 20px auto; display: flex; align-items: center; justify-content: center; }
-        #qrcode img { display: block; max-width: 100%; }
+
+        /* NETWORK GRID */
+        .networks-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .net-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px 5px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .net-card.active { border-color: var(--primary); background: rgba(10, 186, 181, 0.15); }
+        .net-name { display: block; font-family: 'Rajdhani'; font-weight: 700; font-size: 0.9rem; color: #fff; }
+        .net-token { font-size: 0.7rem; color: var(--primary); display: block; margin-top: 2px; }
 
         /* HERO ANIMATION */
         @keyframes heroFloat {
@@ -156,58 +82,17 @@
             100% { transform: translateY(0); filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.3)); }
         }
         .hero-logo-animate { animation: heroFloat 3.5s ease-in-out infinite; }
-
-        /* DASHBOARD STYLES */
-        .user-nav { display: flex; align-items: center; gap: 12px; }
-        .nav-avatar { width: 42px; height: 42px; border-radius: 50%; background: #333; border: 2px solid var(--primary); background-image: url('https://ui-avatars.com/api/?name=Gabriel+Oliveira&background=0ABAB5&color=fff'); background-size: cover; }
-        .hero-balance { text-align: center; margin: 20px 0 30px 0; }
-        .balance-val { font-family: 'Rajdhani', sans-serif; font-size: 2.8rem; font-weight: 700; color: #fff; text-shadow: 0 0 20px rgba(10, 186, 181, 0.3); }
-        .actions-menu { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 15px; margin-bottom: 30px; }
-        .menu-item { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; }
-        .menu-btn { 
-            width: 55px; height: 55px; border-radius: 16px; 
-            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.08);
-            display: flex; align-items: center; justify-content: center; 
-            font-size: 1.2rem; color: #fff; transition: all 0.2s; 
-        }
-        .menu-btn:active { background: rgba(10, 186, 181, 0.15); border-color: var(--primary); color: var(--primary); transform: scale(0.95); }
-        .menu-label { font-size: 0.7rem; font-weight: 500; color: var(--text-muted); }
-
-        /* FEATURES GRID (COMPACT UPDATED) */
-        .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 15px; margin-bottom: 30px; }
-        .feature-card { 
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); 
-            border-radius: 16px; padding: 12px; 
-            display: flex; flex-direction: column; align-items: center; text-align: center; 
-            min-height: 100px; justify-content: center;
-        }
-        .feature-icon { font-size: 1.4rem; color: var(--primary); margin-bottom: 8px; filter: drop-shadow(0 0 8px rgba(10,186,181,0.4)); }
-        .feature-title { font-weight: 600; font-size: 0.85rem; margin-bottom: 4px; line-height: 1.2; }
-        .feature-desc { font-size: 0.65rem; color: var(--text-muted); line-height: 1.3; }
         
-        /* ANALYTICS SPECIFIC */
-        .stat-card-main { 
-            background: linear-gradient(180deg, rgba(0, 224, 150, 0.1), rgba(0,0,0,0)); 
-            border: 1px solid rgba(0, 224, 150, 0.3); border-radius: 24px; padding: 20px; margin-bottom: 20px; 
-            box-shadow: 0 0 30px rgba(0, 224, 150, 0.05); 
-        }
+        /* ANALYTICS & FEATURES */
         .stat-grid-colored { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .stat-box { 
-            padding: 20px; border-radius: 20px; display: flex; flex-direction: column; justify-content: center;
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
-            min-height: 110px;
-        }
-        .box-pink { background: rgba(255, 71, 87, 0.05); border-color: rgba(255, 71, 87, 0.3); }
-        .box-purple { background: rgba(136, 84, 208, 0.05); border-color: rgba(136, 84, 208, 0.3); }
-        .box-orange { background: rgba(250, 130, 49, 0.05); border-color: rgba(250, 130, 49, 0.3); }
-        .box-blue { background: rgba(56, 103, 214, 0.05); border-color: rgba(56, 103, 214, 0.3); }
-
-        .stat-title { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; margin-bottom: 8px; opacity: 0.8; }
-        .stat-value { font-family: 'Rajdhani', sans-serif; font-size: 1.6rem; font-weight: 700; color: #fff; }
-
-        /* SPLASH */
-        #splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #020205; z-index: 999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s; }
-
+        .stat-box { padding: 20px; border-radius: 20px; display: flex; flex-direction: column; justify-content: center; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); min-height: 110px; }
+        .box-pink { border-color: rgba(255, 71, 87, 0.3); background: rgba(255, 71, 87, 0.05); } .box-purple { border-color: rgba(136, 84, 208, 0.3); background: rgba(136, 84, 208, 0.05); }
+        .box-orange { border-color: rgba(250, 130, 49, 0.3); background: rgba(250, 130, 49, 0.05); } .box-blue { border-color: rgba(56, 103, 214, 0.3); background: rgba(56, 103, 214, 0.05); }
+        .stat-title { font-size: 0.7rem; font-weight: 600; margin-bottom: 8px; opacity: 0.8; } .stat-value { font-family: 'Rajdhani'; font-size: 1.6rem; font-weight: 700; color: #fff; }
+        
+        .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 15px; margin-bottom: 30px; }
+        .feature-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 12px; display: flex; flex-direction: column; align-items: center; text-align: center; min-height: 100px; justify-content: center; }
+        .feature-icon { font-size: 1.4rem; color: var(--primary); margin-bottom: 8px; } .feature-title { font-weight: 600; font-size: 0.85rem; margin-bottom: 4px; } .feature-desc { font-size: 0.65rem; color: rgba(255,255,255,0.6); }
     </style>
 </head>
 <body>
@@ -215,8 +100,7 @@
     <div id="token-modal" class="modal-overlay" onclick="closeTokenModal(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="modal-title">Selecione o Token</div>
-            <div id="token-list-container" class="token-list">
-                </div>
+            <div id="token-list-container" class="token-list"></div>
         </div>
     </div>
 
@@ -225,51 +109,19 @@
             <h3 style="font-family:'Rajdhani'; font-size:1.5rem; margin-bottom:20px; text-align:center; color:#fff;"><i class="fas fa-file-contract"></i> REGRAS</h3>
             <div class="rules-content">
                 <p><strong>📄 | REGRAS GATEWAY • ZEUS:</strong></p>
-                
-                <h4>📥 — Depósitos/Pagamentos PIX sem KYC:</h4>
-                <p>Mínimo: R$5,00 | Máximo: R$3.000,00<br>
-                Valores por CPF ou CNPJ.<br>
-                Cada CPF/CNPJ pode pagar até R$6.000,00 a cada 24h.<br>
-                CPF/CNPJ diferentes não tem limite diário respeitando os valores mínimos e máximos.</p>
-
-                <h4>♻️ — Taxas Depósitos/Pagamentos PIX:</h4>
-                <p>De R$5,00 à R$199,99 = R$2,00 de Taxa.<br>
-                Acima de R$200,00 = 0 Taxa.</p>
-
-                <h4>📤 — Saques/Retiradas PIX sem KYC:</h4>
-                <p>Mínimo: R$150,00 | Máximo: R$5.930,00<br>
-                Valores por CPF ou CNPJ.<br>
-                Cada CPF/CNPJ pode sacar até R$5.930,00 a cada 24h.<br>
-                CPF/CNPJ diferentes não tem limite diário respeitando os valores mínimos e máximos.</p>
-
-                <h4>🧾 — Pagamento de Boleto sem KYC:</h4>
-                <p>Limite: Até R$ 20.000,00 por boleto. Para valores maiores, divida em múltiplos boletos.<br>
-                até 1 hora útil dentro do horário comercial (09:00 às 18:00) e o usuário recebe o comprovante por mensagem.</p>
-
-                <h4>♻️ — Taxas Saque/Retirada:</h4>
-                <p>BOLETO = 20%<br>
-                PIX = 15%<br>
-                CRYPTO = 10%</p>
-
-                <div style="margin-top:20px; font-size:0.8rem; color:var(--primary);">
-                    》@ZeusServicesOfc<br>
-                    》@THxWeb3Dev<br>
-                    》Canal: https://t.me/ZeusP2PFinance
-                </div>
+                <h4>📥 — Depósitos/Pagamentos PIX sem KYC:</h4><p>Mínimo: R$5,00 | Máximo: R$3.000,00<br>Valores por CPF ou CNPJ.<br>Cada CPF/CNPJ pode pagar até R$6.000,00 a cada 24h.</p>
+                <h4>♻️ — Taxas Depósitos/Pagamentos PIX:</h4><p>De R$5,00 à R$199,99 = R$2,00 de Taxa.<br>Acima de R$200,00 = 0 Taxa.</p>
+                <h4>📤 — Saques/Retiradas PIX sem KYC:</h4><p>Mínimo: R$150,00 | Máximo: R$5.930,00<br>Valores por CPF ou CNPJ.</p>
+                <h4>🧾 — Pagamento de Boleto sem KYC:</h4><p>Limite: Até R$ 20.000,00 por boleto.</p>
+                <h4>♻️ — Taxas Saque/Retirada:</h4><p>BOLETO = 20%<br>PIX = 15%<br>CRYPTO = 10%</p>
+                <div style="margin-top:20px; font-size:0.8rem; color:var(--primary);">》@ZeusServicesOfc<br>》@THxWeb3Dev<br>》Canal: https://t.me/ZeusP2PFinance</div>
             </div>
             <button class="btn-primary" style="margin-top:20px;" onclick="closeRules()">Entendido</button>
         </div>
     </div>
 
-    <section id="splash-screen">
-        <div style="width:100px; height:100px; background:linear-gradient(135deg, rgba(10,186,181,0.2), rgba(15,82,186,0.3)); border-radius:25px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,0.1); box-shadow:0 10px 40px rgba(0,0,0,0.5);">
-            <i class="fas fa-bolt" style="font-size:3rem; color:var(--accent);"></i>
-        </div>
-    </section>
-
-    <section id="login-screen" class="hidden">
+    <section id="login-screen">
         <div class="screen-content" style="display:flex; flex-direction:column; justify-content:center; height:100vh; padding-bottom:0;">
-            
             <div style="display:flex; justify-content:center; margin-bottom:40px;">
                 <div class="hero-logo-animate" style="width:140px; height:140px; background:linear-gradient(180deg, rgba(10,186,181,0.1), rgba(15,82,186,0.2)); border-radius:35px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,0.1); box-shadow:0 0 40px rgba(10,186,181,0.15);">
                    <i class="fas fa-bolt" style="font-size:4.5rem; color:var(--accent); filter:drop-shadow(0 0 20px rgba(255,215,0,0.5));"></i>
@@ -277,419 +129,169 @@
            </div>
 
            <div class="login-card">
-               <div class="login-title"><i class="fab fa-telegram" style="color:#229ED9;"></i> Telegram</div>
-               <div id="tg-user-container" style="display:flex; flex-direction:column; align-items:center; width:100%;">
-                   <div class="login-avatar" id="login-avatar-img"></div>
-                   <h3 id="login-name" style="margin-bottom:5px;">Visitante</h3>
-                   <div id="login-username" style="font-size:0.8rem; color:var(--text-muted); margin-bottom:5px;">@usuario</div>
-                   <div id="login-id" style="font-size:0.7rem; color:var(--primary); margin-bottom:15px;">ID: ---</div>
-               </div>
-               <button class="btn-primary btn-telegram" onclick="enterApp('telegram')">Conectar</button>
+                <div class="login-title"><i class="fas fa-user-circle" style="color:var(--primary);"></i> Acessar Conta</div>
+                <input type="text" id="login-input" class="custom-input" placeholder="Usuário">
+                <input type="password" id="pass-input" class="custom-input" placeholder="Senha">
+                <button class="btn-primary" onclick="enterApp()">Entrar</button>
            </div>
-
-           <div class="login-card">
-                <div class="login-title"><i class="fas fa-envelope" style="color:var(--primary);"></i> Criar Conta</div>
-                <input type="email" class="custom-input" placeholder="Seu E-mail" style="margin-bottom:10px;">
-                <input type="text" class="custom-input" placeholder="Nome de Usuário" style="margin-bottom:10px;">
-                <input type="password" class="custom-input" placeholder="Senha" style="margin-bottom:20px;">
-                <button class="btn-primary" onclick="enterApp('email')">Criar e Entrar</button>
-           </div>
-
         </div>
     </section>
 
     <section id="main-app" class="hidden">
-        <div class="screen-header" style="justify-content: space-between;">
-            <div class="user-nav">
-                <div class="nav-avatar" id="dash-avatar"></div>
-                <div><span style="font-size:0.75rem; color:var(--primary);">Olá,</span><h3 style="font-size:1rem;" id="dash-name">Usuário</h3></div>
+        <div class="screen-header">
+            <div style="display:flex; align-items:center; gap:12px;">
+                <div class="nav-avatar"></div>
+                <div><span style="font-size:0.75rem; color:var(--primary);">Olá,</span><h3 id="dash-name">Visitante</h3></div>
             </div>
             <div style="display:flex; gap:10px;">
-                <div onclick="openRules()" style="width:35px; height:35px; border-radius:50%; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; cursor:pointer;">
-                    <i class="fas fa-file-contract" style="font-size:0.9rem;"></i>
-                </div>
-                <div onclick="openAnalytics()" style="width:35px; height:35px; border-radius:50%; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; cursor:pointer;">
-                    <i class="fas fa-chart-pie" style="font-size:0.9rem;"></i>
-                </div>
+                <div onclick="openRules()" style="width:35px; height:35px; border-radius:50%; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fas fa-file-contract"></i></div>
+                <div onclick="openAnalytics()" style="width:35px; height:35px; border-radius:50%; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fas fa-chart-pie"></i></div>
             </div>
         </div>
-
-        <div style="padding: 15px;">
-            <div class="custom-input" style="display:flex; align-items:center; gap:10px; margin-bottom:20px; padding:12px 16px;">
-                <i class="fas fa-search" style="color:var(--text-muted);"></i>
-                <span style="color:var(--text-muted); font-size:0.9rem;">Buscar pagamentos...</span>
-            </div>
-        </div>
-
-        <div style="display:flex; justify-content:center; margin-bottom:30px;">
-             <div class="hero-logo-animate" style="width:110px; height:110px; background:linear-gradient(180deg, rgba(10,186,181,0.1), rgba(15,82,186,0.2)); border-radius:30px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,0.1); box-shadow:0 0 30px rgba(10,186,181,0.1);">
-                <i class="fas fa-bolt" style="font-size:3.5rem; color:var(--accent); filter:drop-shadow(0 0 15px rgba(255,215,0,0.5));"></i>
-            </div>
+        
+        <div class="stat-card-main">
+            <p style="font-size:0.8rem; color:#00E096; letter-spacing:1px; margin-bottom:5px;">SALDO DISPONÍVEL</p>
+            <h1 style="font-family:'Rajdhani'; font-size:2.8rem; margin:0;">R$ 14.250,90</h1>
         </div>
 
         <div class="actions-menu">
-            <div class="menu-item" onclick="openScreen('pix-withdraw')">
-                <div class="menu-btn"><i class="fas fa-money-bill-transfer"></i></div>
-                <span class="menu-label">Sacar PIX</span>
-            </div>
-            <div class="menu-item" onclick="openScreen('charge-screen')">
-                <div class="menu-btn"><i class="fas fa-hand-holding-dollar"></i></div>
-                <span class="menu-label">Cobrar</span>
-            </div>
-            <div class="menu-item" onclick="openScreen('boleto-screen')">
-                <div class="menu-btn"><i class="fas fa-barcode"></i></div>
-                <span class="menu-label">Pagar Boleto</span>
-            </div>
-            <div class="menu-item" onclick="openScreen('crypto-withdraw')">
-                <div class="menu-btn"><i class="fas fa-wallet"></i></div>
-                <span class="menu-label">Sacar Cripto</span>
-            </div>
+            <div class="menu-item" onclick="openScreen('pix-withdraw')"><div class="menu-btn"><i class="fas fa-money-bill-transfer"></i></div><span>Sacar PIX</span></div>
+            <div class="menu-item" onclick="openScreen('charge-screen')"><div class="menu-btn"><i class="fas fa-hand-holding-dollar"></i></div><span>Cobrar</span></div>
+            <div class="menu-item" onclick="openScreen('boleto-screen')"><div class="menu-btn"><i class="fas fa-barcode"></i></div><span>Boleto</span></div>
+            <div class="menu-item" onclick="openScreen('crypto-withdraw')"><div class="menu-btn"><i class="fas fa-wallet"></i></div><span>Cripto</span></div>
         </div>
 
-        <div style="background:#0a0a0e; border-top-left-radius:30px; border-top-right-radius:30px; padding-top:25px; min-height:300px;">
-            <h3 style="padding:0 25px; margin-bottom:20px; font-family:'Rajdhani'; font-weight:700;">Nossos Benefícios e Vantagens</h3>
+        <div style="padding: 0 20px;">
+            <h4 style="font-family:'Rajdhani'; margin-bottom:15px; opacity:0.8;">Recursos</h4>
             <div class="features-grid">
-                <div class="feature-card">
-                    <i class="fas fa-shield-alt feature-icon"></i>
-                    <div class="feature-title">Segurança</div>
-                    <div class="feature-desc">Proteção total nas operações.</div>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-coins feature-icon"></i>
-                    <div class="feature-title">Liquidez</div>
-                    <div class="feature-desc">Alta capacidade de atendimento.</div>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-user-secret feature-icon"></i>
-                    <div class="feature-title">Anonimato 0 KYC</div>
-                    <div class="feature-desc">Sem verificação de documentos.</div>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-headset feature-icon"></i>
-                    <div class="feature-title">Suporte</div>
-                    <div class="feature-desc">Atendimento humanizado 24/7.</div>
-                </div>
+                <div class="feature-card"><i class="fas fa-shield-alt feature-icon"></i><div class="feature-title">Segurança</div><div class="feature-desc">Proteção total</div></div>
+                <div class="feature-card"><i class="fas fa-coins feature-icon"></i><div class="feature-title">Liquidez</div><div class="feature-desc">Alta capacidade</div></div>
+                <div class="feature-card"><i class="fas fa-user-secret feature-icon"></i><div class="feature-title">Sem KYC</div><div class="feature-desc">Anonimato total</div></div>
+                <div class="feature-card"><i class="fas fa-headset feature-icon"></i><div class="feature-title">Suporte</div><div class="feature-desc">Atendimento 24/7</div></div>
             </div>
             
-            <h3 style="padding:0 25px; margin-bottom:20px; font-family:'Rajdhani'; font-weight:700;">Nossos Números</h3>
-             <div style="padding:0 15px 30px 15px;">
+            <h3 style="padding:0 5px; margin-bottom:20px; font-family:'Rajdhani'; font-weight:700;">Nossos Números</h3>
+             <div style="padding:0 5px 30px 5px;">
                 <div style="background:linear-gradient(135deg, rgba(10,186,181,0.1), rgba(15,82,186,0.1)); border:1px solid rgba(255,255,255,0.1); border-radius:24px; padding:25px; display:grid; grid-template-columns:1fr 1fr; gap:20px;">
-                    <div style="text-align:center;">
-                        <i class="fas fa-users" style="color:var(--accent); font-size:1.8rem; margin-bottom:10px;"></i>
-                        <div style="font-family:'Rajdhani'; font-size:1.8rem; font-weight:700;">+1K</div>
-                        <div style="font-size:0.8rem; color:var(--text-muted);">de Clientes Ativos</div>
-                    </div>
-                    <div style="text-align:center;">
-                        <i class="fas fa-handshake" style="color:var(--accent); font-size:1.8rem; margin-bottom:10px;"></i>
-                        <div style="font-family:'Rajdhani'; font-size:1.8rem; font-weight:700;">+10k</div>
-                        <div style="font-size:0.8rem; color:var(--text-muted);">de Negociações</div>
-                    </div>
+                    <div style="text-align:center;"><i class="fas fa-users" style="color:var(--accent); font-size:1.8rem; margin-bottom:10px;"></i><div style="font-family:'Rajdhani'; font-size:1.8rem; font-weight:700;">+1K</div><div style="font-size:0.8rem; color:rgba(255,255,255,0.6);">Clientes Ativos</div></div>
+                    <div style="text-align:center;"><i class="fas fa-handshake" style="color:var(--accent); font-size:1.8rem; margin-bottom:10px;"></i><div style="font-family:'Rajdhani'; font-size:1.8rem; font-weight:700;">+10k</div><div style="font-size:0.8rem; color:rgba(255,255,255,0.6);">Negociações</div></div>
                 </div>
              </div>
         </div>
     </section>
 
     <section id="analytics-screen" class="hidden">
-        <div class="screen-header">
-            <div class="back-btn" onclick="backToMain()"><i class="fas fa-arrow-left"></i></div>
-            <h3 style="font-family: 'Rajdhani'; font-weight: 700;">Performance</h3>
-        </div>
+        <div class="screen-header"><div class="back-btn" onclick="backToMain()"><i class="fas fa-arrow-left"></i></div><h3>Performance</h3></div>
         <div class="screen-content">
             <div class="stat-card-main">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <div>
-                        <div style="font-size:0.8rem; color:var(--color-green); text-transform: uppercase; letter-spacing:1px; margin-bottom:5px;">SALDO</div>
-                        <div style="font-size:0.8rem; color:var(--text-muted);">Conta principal</div>
-                    </div>
+                    <div><div style="font-size:0.8rem; color:var(--color-green);">SALDO</div></div>
                     <div style="font-family:'Rajdhani'; font-size:1.8rem; font-weight:700; color:var(--color-green);">R$ 14.250,90</div>
                 </div>
-                
-                <div style="height:100px; width:100%; margin:20px 0;">
-                    <canvas id="performanceChart"></canvas>
-                </div>
-
-                <div style="display:flex; gap:10px; margin-top:15px;">
-                    <div style="flex:1; background:rgba(0,0,0,0.3); padding:10px; border-radius:12px; text-align:center;">
-                        <div style="font-size:0.65rem; color:var(--text-muted); margin-bottom:5px;">TOTAL RECEBIDO</div>
-                        <div style="font-family:'Rajdhani'; font-weight:700; color:var(--color-green);">R$ 14.250,90</div>
-                    </div>
-                    <div style="flex:1; background:rgba(0,0,0,0.3); padding:10px; border-radius:12px; text-align:center;">
-                        <div style="font-size:0.65rem; color:var(--text-muted); margin-bottom:5px;">TOTAL SACADO</div>
-                        <div style="font-family:'Rajdhani'; font-weight:700; color:var(--color-green);">R$ 0,00</div>
-                    </div>
-                </div>
+                <div style="height:100px; width:100%; margin:20px 0;"><canvas id="performanceChart"></canvas></div>
             </div>
-
             <div class="stat-grid-colored">
-                <div class="stat-box box-pink">
-                    <div class="stat-title" style="color:#ff4757;">PIX VERIFICADOS</div>
-                    <div class="stat-value">128</div>
-                </div>
-                <div class="stat-box box-purple">
-                    <div class="stat-title" style="color:#8854D0;">VOLUME VERIFICADO</div>
-                    <div class="stat-value" style="font-size:1.3rem;">R$ 14.2k</div>
-                </div>
-                <div class="stat-box box-orange">
-                    <div class="stat-title" style="color:#FA8231;">PIX PENDENTES</div>
-                    <div class="stat-value">0</div>
-                </div>
-                <div class="stat-box box-blue">
-                    <div class="stat-title" style="color:#3867D6;">ULTIMO PAGAMENTO</div>
-                    <div class="stat-value" style="font-size:1.4rem;">-</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="boleto-screen" class="hidden">
-        <div class="screen-header">
-            <div class="back-btn" onclick="backToMain()"><i class="fas fa-arrow-left"></i></div>
-            <h3>Pagar Boleto</h3>
-        </div>
-        <div class="screen-content">
-            <div id="boleto-step-1">
-                <label style="font-size:0.8rem; margin-left:4px;">Valor do Boleto</label>
-                <input type="number" id="boleto-val-input" class="custom-input" placeholder="0,00" oninput="updateBoletoCalc()">
-                
-                <label style="font-size:0.8rem; margin-left:4px;">Código de Barras</label>
-                <input type="text" id="boleto-code-input" class="custom-input" placeholder="Digite ou cole o código" oninput="checkBoletoValid()">
-
-                <div class="calc-card">
-                    <div class="calc-row"><span>Valor Boleto</span><span class="val-display" id="boleto-disp-req">R$ 0,00</span></div>
-                    <div class="calc-row"><span style="color:var(--color-red)">Taxa Serviço (20%)</span><span class="val-display" style="color:var(--color-red)" id="boleto-disp-fee">- R$ 0,00</span></div>
-                    <div class="calc-row final"><span style="color:var(--primary)">Total Descontado</span><span class="val-display" style="color:var(--primary)" id="boleto-disp-total">R$ 0,00</span></div>
-                </div>
-
-                <button id="btn-boleto-req" class="btn-primary" disabled onclick="submitBoleto()">Pagar Boleto</button>
-            </div>
-
-            <div id="boleto-step-2" class="hidden" style="text-align: center; padding-top: 40px;">
-                <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--color-green); margin-bottom: 20px;"></i>
-                <h2 style="font-family:'Rajdhani'; margin-bottom: 10px;">Pagamento Solicitado!</h2>
-                <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom: 30px;">
-                    Os pagamentos estão sendo processados manualmente temporariamente.<br>Envie os dados para o suporte finalizar.
-                </p>
-                <button class="btn-primary btn-telegram" onclick="sendBoletoToSupport()">
-                    <i class="fab fa-telegram-plane"></i> Enviar Dados
-                </button>
+                <div class="stat-box box-pink"><div class="stat-title" style="color:#ff4757;">PIX VERIFICADOS</div><div class="stat-value">128</div></div>
+                <div class="stat-box box-purple"><div class="stat-title" style="color:#8854D0;">VOLUME</div><div class="stat-value">R$ 14.2k</div></div>
+                <div class="stat-box box-orange"><div class="stat-title" style="color:#FA8231;">PENDENTES</div><div class="stat-value">0</div></div>
+                <div class="stat-box box-blue"><div class="stat-title" style="color:#3867D6;">ÚLTIMO</div><div class="stat-value">-</div></div>
             </div>
         </div>
     </section>
 
     <section id="pix-withdraw" class="hidden">
-        <div class="screen-header">
-            <div class="back-btn" onclick="backToMain()"><i class="fas fa-arrow-left"></i></div>
-            <h3>Sacar PIX</h3>
-        </div>
+        <div class="screen-header"><div class="back-btn" onclick="backToMain()"><i class="fas fa-arrow-left"></i></div><h3>Sacar PIX</h3></div>
         <div class="screen-content">
             <div id="pix-step-1">
-                <label style="font-size:0.8rem; margin-left:4px;">Valor do Saque</label>
-                <input type="number" id="pix-val-input" class="custom-input" placeholder="0,00" oninput="updatePixCalc()">
-                
-                <div class="chip-grid">
-                    <div class="chip-btn" onclick="setPixVal(150)">R$ 150</div>
-                    <div class="chip-btn" onclick="setPixVal(200)">R$ 200</div>
-                    <div class="chip-btn" onclick="setPixVal(500)">R$ 500</div>
-                    <div class="chip-btn" onclick="setPixVal(1000)">R$ 1k</div>
-                </div>
-
-                <label style="font-size:0.8rem; margin-left:4px;">Tipo de Chave</label>
-                <div class="chip-grid">
-                    <div class="chip-btn key-type" onclick="setPixKeyType('CPF/CNPJ', this)">CPF</div>
-                    <div class="chip-btn key-type" onclick="setPixKeyType('TELEFONE', this)">Celular</div>
-                    <div class="chip-btn key-type" onclick="setPixKeyType('E-MAIL', this)">E-mail</div>
-                    <div class="chip-btn key-type" onclick="setPixKeyType('ALEATÓRIA', this)">Aleatória</div>
-                </div>
-
-                <input type="text" id="pix-key-input" class="custom-input" placeholder="Informe a chave PIX" oninput="checkPixValid()">
-
-                <div class="calc-card">
-                    <div class="calc-row"><span>Valor Solicitado</span><span class="val-display" id="pix-disp-req">R$ 0,00</span></div>
-                    <div class="calc-row"><span style="color:var(--color-red)">Taxa (15%)</span><span class="val-display" style="color:var(--color-red)" id="pix-disp-fee">- R$ 0,00</span></div>
-                    <div class="calc-row final"><span style="color:var(--primary)">Receber</span><span class="val-display" style="color:var(--primary)" id="pix-disp-total">R$ 0,00</span></div>
-                </div>
-
-                <button id="btn-pix-req" class="btn-primary" disabled onclick="submitPix()">Solicitar Saque PIX</button>
+                <label style="font-size:0.8rem; margin-left:4px;">Valor</label><input type="number" id="pix-val-input" class="custom-input" placeholder="0,00" oninput="updatePixCalc()">
+                <div class="chip-grid"><div class="chip-btn" onclick="setPixVal(150)">150</div><div class="chip-btn" onclick="setPixVal(500)">500</div><div class="chip-btn" onclick="setPixVal(1000)">1k</div></div>
+                <input type="text" id="pix-key-input" class="custom-input" placeholder="Chave PIX" oninput="checkPixValid()">
+                <div class="calc-card"><div class="calc-row"><span>Receber</span><span class="val-display" id="pix-disp-total">R$ 0,00</span></div></div>
+                <button id="btn-pix-req" class="btn-primary" disabled onclick="submitPix()">Solicitar</button>
             </div>
-
-            <div id="pix-step-2" class="hidden" style="text-align: center; padding-top: 40px;">
-                <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--color-green); margin-bottom: 20px;"></i>
-                <h2 style="font-family:'Rajdhani'; margin-bottom: 10px;">Saque Solicitado!</h2>
-                <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom: 30px;">
-                    Os saques estão sendo processados manualmente temporariamente.<br>Envie mensagem ao suporte para finalizar.
-                </p>
-                <button class="btn-primary btn-telegram" onclick="sendPixToSupport()">
-                    <i class="fab fa-telegram-plane"></i> Enviar Mensagem
-                </button>
-            </div>
+            <div id="pix-step-2" class="hidden" style="text-align:center; padding-top:40px;"><i class="fas fa-check-circle" style="font-size:4rem; color:#00E096;"></i><h2>Solicitado!</h2><button class="btn-primary" onclick="sendPixToSupport()">Enviar Comprovante</button></div>
         </div>
     </section>
 
     <section id="charge-screen" class="hidden">
-        <div class="screen-header">
-            <div class="back-btn" onclick="backToMain()"><i class="fas fa-arrow-left"></i></div>
-            <h3>Gerar Cobrança</h3>
-        </div>
+        <div class="screen-header"><div class="back-btn" onclick="backToMain()"><i class="fas fa-arrow-left"></i></div><h3>Cobrar</h3></div>
         <div class="screen-content">
             <div id="charge-step-1">
-                <label style="font-size:0.8rem; margin-left:4px;">Valor da Cobrança</label>
-                <input type="number" id="charge-val-input" class="custom-input" placeholder="0,00" oninput="updateChargeCalc()">
-                
-                <div class="info-card">
-                    <strong>Taxas e Regras:</strong><br>
-                    • Mínimo: R$ 5,00 | Máximo: R$ 3.000,00<br>
-                    • R$ 5,00 a R$ 199,99: <strong>R$ 2,00 taxa</strong><br>
-                    • Acima de R$ 200,00: <strong>Taxa ZERO</strong>
-                </div>
-
-                <div class="calc-card">
-                    <div class="calc-row"><span>Valor Solicitado</span><span class="val-display" id="charge-disp-req">R$ 0,00</span></div>
-                    <div class="calc-row"><span style="color:var(--color-red)">Taxa</span><span class="val-display" style="color:var(--color-red)" id="charge-disp-fee">- R$ 0,00</span></div>
-                    <div class="calc-row final"><span style="color:var(--primary)">Receber</span><span class="val-display" style="color:var(--primary)" id="charge-disp-total">R$ 0,00</span></div>
-                </div>
-
-                <button id="btn-charge-gen" class="btn-primary" disabled onclick="generateRealPix()">Gerar Cobrança PIX</button>
+                <label>Valor</label><input type="number" id="charge-val-input" class="custom-input" placeholder="0,00" oninput="updateChargeCalc()">
+                <div class="calc-card"><div class="calc-row"><span>Receber</span><span class="val-display" id="charge-disp-total">R$ 0,00</span></div></div>
+                <button id="btn-charge-gen" class="btn-primary" disabled onclick="generateRealPix()">Gerar PIX</button>
             </div>
+            <div id="charge-step-2" class="hidden" style="text-align:center;"><div id="qrcode" style="margin:20px auto; width:180px;"></div><textarea id="pix-copy-paste" class="custom-input" readonly></textarea><button class="btn-primary" onclick="copyPixCode()">Copiar</button><button style="background:none; border:none; color:#aaa; margin-top:10px;" onclick="resetCharge()">Voltar</button></div>
+        </div>
+    </section>
 
-            <div id="charge-step-2" class="hidden" style="text-align: center; padding-top: 20px;">
-                <h3 style="font-family:'Rajdhani'; margin-bottom: 5px;">Aguardando Pagamento...</h3>
-                <div id="status-indicator" style="font-size:0.8rem; color:var(--accent); margin-bottom:15px; animation: pulse 1.5s infinite;">Verificando Status</div>
-                
-                <div class="qr-area"><div id="qrcode"></div></div>
-                
-                <label style="font-size:0.8rem; color:var(--text-muted); display:block; margin-bottom:5px; text-align:left;">Pix Copia e Cola:</label>
-                <textarea id="pix-copy-paste" class="custom-input" style="font-size:0.75rem; height:80px; word-break:break-all;" readonly></textarea>
-                
-                <button class="btn-primary" onclick="copyPixCode()">Copiar Código PIX</button>
-                <button style="background:transparent; border:none; color:var(--text-muted); margin-top:20px; text-decoration:underline;" onclick="resetCharge()">Gerar Nova Cobrança</button>
+    <section id="boleto-screen" class="hidden">
+        <div class="screen-header"><div class="back-btn" onclick="backToMain()"><i class="fas fa-arrow-left"></i></div><h3>Boleto</h3></div>
+        <div class="screen-content">
+            <div id="boleto-step-1">
+                <label>Valor</label><input type="number" id="boleto-val-input" class="custom-input" placeholder="0,00" oninput="updateBoletoCalc()">
+                <input type="text" id="boleto-code-input" class="custom-input" placeholder="Código de Barras" oninput="checkBoletoValid()">
+                <div class="calc-card"><div class="calc-row"><span>Total</span><span class="val-display" id="boleto-disp-total">R$ 0,00</span></div></div>
+                <button id="btn-boleto-req" class="btn-primary" disabled onclick="submitBoleto()">Pagar</button>
             </div>
+            <div id="boleto-step-2" class="hidden" style="text-align:center; padding-top:40px;"><i class="fas fa-check-circle" style="font-size:4rem; color:#00E096;"></i><h2>Solicitado!</h2><button class="btn-primary" onclick="sendBoletoToSupport()">Enviar</button></div>
         </div>
     </section>
 
     <section id="crypto-withdraw" class="hidden">
-        <div class="screen-header">
-            <div class="back-btn" onclick="backToMain()"><i class="fas fa-arrow-left"></i></div>
-            <h3>Sacar Cripto</h3>
-        </div>
+        <div class="screen-header"><div class="back-btn" onclick="backToMain()"><i class="fas fa-arrow-left"></i></div><h3>Cripto</h3></div>
         <div class="screen-content">
             <div id="crypto-step-1">
-                <label style="font-size:0.8rem; margin-left:4px;">Selecione a Rede</label>
                 <div class="networks-grid">
-                    <div class="net-card" onclick="selectNetwork('BTC')">
-                        <span class="net-name">BTC</span><span class="net-token" id="tk-BTC">On-Chain</span>
-                    </div>
-                    <div class="net-card" onclick="selectNetwork('BSC')">
-                        <span class="net-name">BSC</span><span class="net-token" id="tk-BSC">Selecionar</span>
-                    </div>
-                    <div class="net-card" onclick="selectNetwork('POL')">
-                        <span class="net-name">POL</span><span class="net-token" id="tk-POL">Selecionar</span>
-                    </div>
-                    <div class="net-card" onclick="selectNetwork('BASE')">
-                        <span class="net-name">BASE</span><span class="net-token" id="tk-BASE">Selecionar</span>
-                    </div>
-                    <div class="net-card" onclick="selectNetwork('ETH')">
-                        <span class="net-name">ETH</span><span class="net-token" id="tk-ETH">Selecionar</span>
-                    </div>
-                    <div class="net-card" onclick="selectNetwork('SOL')">
-                        <span class="net-name">SOL</span><span class="net-token" id="tk-SOL">Selecionar</span>
-                    </div>
+                    <div class="net-card" onclick="selectNetwork('BTC')"><span class="net-name">BTC</span></div>
+                    <div class="net-card" onclick="selectNetwork('BSC')"><span class="net-name">BSC</span></div>
+                    <div class="net-card" onclick="selectNetwork('ETH')"><span class="net-name">ETH</span></div>
                 </div>
-
-                <label style="font-size:0.8rem; margin-left:4px;">Valor (R$)</label>
-                <input type="number" id="crypto-val-input" class="custom-input" placeholder="0,00" oninput="updateCryptoCalc()">
-
-                <label style="font-size:0.8rem; margin-left:4px;">Endereço da Carteira</label>
-                <input type="text" id="crypto-addr-input" class="custom-input" placeholder="Cole o endereço" oninput="checkCryptoValid()">
-
-                <div class="calc-card">
-                    <div class="calc-row"><span>Token</span><span class="val-display" style="color:var(--accent)" id="crypto-disp-token">---</span></div>
-                    <div class="calc-row"><span>Valor Solicitado</span><span class="val-display" id="crypto-disp-req">R$ 0,00</span></div>
-                    <div class="calc-row"><span style="color:var(--color-red)">Taxa Serviço (10%)</span><span class="val-display" style="color:var(--color-red)" id="crypto-disp-fee">- R$ 0,00</span></div>
-                    <div class="calc-row"><span style="color:var(--color-red)">Taxa Rede</span><span class="val-display" style="color:var(--color-red)">GRÁTIS</span></div>
-                    <div class="calc-row final"><span style="color:var(--primary)">Receber (Est.)</span><span class="val-display" style="color:var(--primary)" id="crypto-disp-total">R$ 0,00</span></div>
-                </div>
-
-                <button id="btn-crypto-req" class="btn-primary" disabled onclick="submitCrypto()">Solicitar Saque Crypto</button>
+                <input type="number" id="crypto-val-input" class="custom-input" placeholder="Valor" oninput="updateCryptoCalc()">
+                <input type="text" id="crypto-addr-input" class="custom-input" placeholder="Endereço" oninput="checkCryptoValid()">
+                <div class="calc-card"><div class="calc-row"><span>Receber</span><span class="val-display" id="crypto-disp-total">R$ 0,00</span></div></div>
+                <button id="btn-crypto-req" class="btn-primary" disabled onclick="submitCrypto()">Sacar</button>
             </div>
-
-             <div id="crypto-step-2" class="hidden" style="text-align: center; padding-top: 40px;">
-                <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--color-green); margin-bottom: 20px;"></i>
-                <h2 style="font-family:'Rajdhani'; margin-bottom: 10px;">Saque Solicitado!</h2>
-                <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom: 30px;">
-                    Os saques estão sendo processados manualmente temporariamente.<br>Envie mensagem ao suporte para finalizar.
-                </p>
-                <button class="btn-primary btn-telegram" onclick="sendCryptoToSupport()">
-                    <i class="fab fa-telegram-plane"></i> Enviar Mensagem
-                </button>
-            </div>
+            <div id="crypto-step-2" class="hidden" style="text-align:center; padding-top:40px;"><i class="fas fa-check-circle" style="font-size:4rem; color:#00E096;"></i><h2>Solicitado!</h2><button class="btn-primary" onclick="sendCryptoToSupport()">Enviar</button></div>
         </div>
     </section>
 
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
+        // CONFIGURACAO TG
         const tg = window.Telegram.WebApp;
+        tg.ready();
         tg.expand();
         tg.setHeaderColor('#020205');
 
-        // --- GLOBAL DATA ---
-        let currentScreen = 'login-screen'; // START AT LOGIN
-        let pixKeyType = '';
-        let cryptoNetwork = '';
-        let cryptoToken = '';
-        let activeChargeId = null;
-        let statusInterval = null;
-        let chartInstance = null;
-        let userBalance = 14250.90; // SIMULATED BALANCE
-        
-        // Dados de Tokens por Rede
-        const networkTokens = {
-            'BTC': ['BTC'],
-            'BSC': ['BNB', 'USDT', 'USDC'],
-            'POL': ['POLYGON', 'USDT', 'USDC'],
-            'BASE': ['ETH', 'USDC'],
-            'ETH': ['ETHEREUM', 'USDT', 'USDC', 'DAI', 'USDE'],
-            'SOL': ['SOLANA', 'USDT', 'USDC']
-        };
+        let currentScreen = 'login-screen';
+        let pixKeyType = '', cryptoNetwork = '', cryptoToken = '', activeChargeId = null, statusInterval = null, chartInstance = null;
+        let userBalance = 14250.90;
+        const networkTokens = { 'BTC': ['BTC'], 'BSC': ['BNB', 'USDT', 'USDC'], 'POL': ['POLYGON', 'USDT', 'USDC'], 'BASE': ['ETH', 'USDC'], 'ETH': ['ETHEREUM', 'USDT', 'USDC', 'DAI', 'USDE'], 'SOL': ['SOLANA', 'USDT', 'USDC'] };
 
-        // --- NAVIGATION ---
-        function init() {
-            // LOAD TELEGRAM USER DATA FOR LOGIN SCREEN
-            const user = tg.initDataUnsafe?.user;
-            if(user) {
-                document.getElementById('login-name').innerText = user.first_name;
-                document.getElementById('login-username').innerText = user.username ? '@'+user.username : '';
-                document.getElementById('login-id').innerText = "ID: " + user.id;
-                // Since TG Web App doesn't provide photo URL directly in initData, we simulate or use a placeholder
-                // document.getElementById('login-avatar-img').style.backgroundImage = ...
+        // --- NAVEGAÇÃO ---
+        function enterApp() {
+            // LOGIN SIMPLES SEM TELEGRAM DATA
+            const userInput = document.getElementById('login-input').value;
+            if(userInput) {
+                document.getElementById('dash-name').innerText = userInput;
             }
-
-            setTimeout(() => {
-                document.getElementById('splash-screen').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('splash-screen').classList.add('hidden');
-                    document.getElementById('login-screen').classList.remove('hidden'); // SHOW LOGIN FIRST
-                    document.getElementById('login-screen').classList.add('fade-in');
-                }, 500);
-            }, 1500);
-        }
-        init();
-
-        function enterApp(method) {
-            if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+            if(window.Telegram?.WebApp?.HapticFeedback) window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
             
-            // Logic to handle login (simulated)
-            const user = tg.initDataUnsafe?.user;
-            if(method === 'telegram' && user) {
-                document.getElementById('dash-name').innerText = user.first_name;
-                // Set avatar if available or default
-            } else if (method === 'email') {
-                document.getElementById('dash-name').innerText = "Usuário";
-            }
-
-            // TRANSITION TO DASHBOARD
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('main-app').classList.remove('hidden');
             document.getElementById('main-app').classList.add('fade-in');
             currentScreen = 'main-app';
+        }
+
+        function backToMain() {
+            document.querySelectorAll('section').forEach(el => {
+                if(el.id !== 'main-app') el.classList.add('hidden');
+            });
+            document.getElementById('main-app').classList.remove('hidden');
         }
 
         function openScreen(id) {
@@ -697,381 +299,77 @@
             document.getElementById(id).classList.remove('hidden');
             document.getElementById(id).classList.add('fade-in');
             currentScreen = id;
-            if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+            if(window.Telegram?.WebApp?.HapticFeedback) window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
         }
 
-        function backToMain() {
-            document.getElementById(currentScreen).classList.add('hidden');
-            document.getElementById('main-app').classList.remove('hidden');
-            currentScreen = 'main-app';
-            
-            // Resets visuals
-            document.getElementById('pix-step-1').classList.remove('hidden');
-            document.getElementById('pix-step-2').classList.add('hidden');
-            document.getElementById('charge-step-1').classList.remove('hidden');
-            document.getElementById('charge-step-2').classList.add('hidden');
-            document.getElementById('crypto-step-1').classList.remove('hidden');
-            document.getElementById('crypto-step-2').classList.add('hidden');
-            document.getElementById('boleto-step-1').classList.remove('hidden');
-            document.getElementById('boleto-step-2').classList.add('hidden');
-            
-            // Stop polling if active
-            if(statusInterval) clearInterval(statusInterval);
-        }
-
+        // --- FUNÇÕES DE NEGÓCIO ---
         function formatCurrency(val) { return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
-
-        // --- NEW FEATURES ---
-        function openRules() {
-            const modal = document.getElementById('rules-modal');
-            modal.style.opacity = '1';
-            modal.style.pointerEvents = 'all';
-            modal.querySelector('.rules-card').style.transform = 'rotateX(0deg)';
-            if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
-        }
-
-        function closeRules() {
-            const modal = document.getElementById('rules-modal');
-            modal.querySelector('.rules-card').style.transform = 'rotateX(10deg)';
-            modal.style.opacity = '0';
-            modal.style.pointerEvents = 'none';
-        }
-
-        function openAnalytics() {
-            openScreen('analytics-screen');
-            initChart();
-        }
+        function openRules() { document.getElementById('rules-modal').style.opacity='1'; document.getElementById('rules-modal').style.pointerEvents='all'; document.querySelector('.rules-card').style.transform='rotateX(0deg)'; }
+        function closeRules() { document.getElementById('rules-modal').querySelector('.rules-card').style.transform='rotateX(10deg)'; document.getElementById('rules-modal').style.opacity='0'; document.getElementById('rules-modal').style.pointerEvents='none'; }
+        function openAnalytics() { openScreen('analytics-screen'); initChart(); }
 
         function initChart() {
             if (chartInstance) return;
-            
             const ctx = document.getElementById('performanceChart').getContext('2d');
-            
-            // Gradient for bars
             const gradient = ctx.createLinearGradient(0, 0, 0, 100);
-            gradient.addColorStop(0, 'rgba(0, 224, 150, 0.8)');
-            gradient.addColorStop(1, 'rgba(0, 224, 150, 0.2)');
-
-            chartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['S', 'T', 'Q', 'Q', 'S', 'S', 'D', 'S', 'T', 'Q'],
-                    datasets: [{
-                        label: 'Volume',
-                        data: [20, 35, 40, 30, 45, 55, 40, 60, 50, 65],
-                        backgroundColor: gradient,
-                        borderRadius: 4,
-                        barThickness: 12
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { display: false },
-                        y: { display: false }
-                    },
-                    animation: {
-                        duration: 1500,
-                        easing: 'easeOutQuart'
-                    }
-                }
-            });
+            gradient.addColorStop(0, 'rgba(0, 224, 150, 0.8)'); gradient.addColorStop(1, 'rgba(0, 224, 150, 0.2)');
+            chartInstance = new Chart(ctx, { type: 'bar', data: { labels: ['S', 'T', 'Q', 'Q', 'S', 'S', 'D', 'S', 'T', 'Q'], datasets: [{ label: 'Volume', data: [20, 35, 40, 30, 45, 55, 40, 60, 50, 65], backgroundColor: gradient, borderRadius: 4, barThickness: 12 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } }, animation: { duration: 1500, easing: 'easeOutQuart' } } });
         }
 
-        // --- BOLETO LOGIC ---
-        function updateBoletoCalc() {
-            const val = parseFloat(document.getElementById('boleto-val-input').value) || 0;
-            const fee = val * 0.20; // 20% rule
-            const total = val + fee;
-            
-            document.getElementById('boleto-disp-req').innerText = formatCurrency(val);
-            document.getElementById('boleto-disp-fee').innerText = "+ " + formatCurrency(fee);
-            document.getElementById('boleto-disp-total').innerText = formatCurrency(total);
-            checkBoletoValid();
-        }
-
-        function checkBoletoValid() {
-            const val = parseFloat(document.getElementById('boleto-val-input').value) || 0;
-            const code = document.getElementById('boleto-code-input').value;
-            const btn = document.getElementById('btn-boleto-req');
-            
-            if(val > 0 && code.length > 5) {
-                btn.disabled = false;
-            } else {
-                btn.disabled = true;
-            }
-        }
-
+        // -- Boleto --
+        function updateBoletoCalc() { const val = parseFloat(document.getElementById('boleto-val-input').value)||0; const fee = val*0.20; const total = val+fee; document.getElementById('boleto-disp-total').innerText = formatCurrency(total); checkBoletoValid(); }
+        function checkBoletoValid() { const val = parseFloat(document.getElementById('boleto-val-input').value)||0; const code = document.getElementById('boleto-code-input').value; document.getElementById('btn-boleto-req').disabled = !(val > 0 && code.length > 5); }
         function submitBoleto() {
-            const val = parseFloat(document.getElementById('boleto-val-input').value) || 0;
-            const fee = val * 0.20;
-            const total = val + fee;
+            const val = parseFloat(document.getElementById('boleto-val-input').value)||0; const fee = val*0.20; const total = val+fee;
+            if (val > 20000) { tg.showAlert("Limite máximo R$ 20.000"); return; }
+            if (total > userBalance) { tg.showAlert("Saldo insuficiente"); return; }
+            document.getElementById('boleto-step-1').classList.add('hidden'); document.getElementById('boleto-step-2').classList.remove('hidden');
+        }
+        function sendBoletoToSupport() { const val = document.getElementById('boleto-val-input').value; const code = document.getElementById('boleto-code-input').value; tg.openTelegramLink(`https://t.me/ZeusServicesOfc?text=🧾 BOLETO%0AValor: R$ ${val}%0ACodigo: ${code}`); }
 
-            // --- VALIDATION ---
-            if (val > 20000) {
-                tg.showAlert("O limite máximo por boleto é de R$ 20.000,00.");
-                return;
-            }
-            if (total > userBalance) {
-                tg.showAlert("Saldo insuficiente para pagar este boleto (Valor + Taxa).");
-                return;
-            }
-            // ------------------
-
-            if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
-            document.getElementById('boleto-step-1').classList.add('hidden');
-            document.getElementById('boleto-step-2').classList.remove('hidden');
-            document.getElementById('boleto-step-2').classList.add('fade-in');
-        }
-
-        function sendBoletoToSupport() {
-            const val = document.getElementById('boleto-val-input').value;
-            const code = document.getElementById('boleto-code-input').value;
-            const msg = `🧾 *SOLICITAÇÃO PAGAMENTO BOLETO*%0AValor: R$ ${val}%0ACódigo: \`${code}\`%0AID: ${tg.initDataUnsafe?.user?.id}`;
-            tg.openTelegramLink(`https://t.me/ZeusServicesOfc?text=${msg}`);
-        }
-
-        // --- PIX WITHDRAW LOGIC ---
-        function setPixVal(val) {
-            document.getElementById('pix-val-input').value = val;
-            updatePixCalc();
-        }
-        function setPixKeyType(type, el) {
-            pixKeyType = type;
-            document.querySelectorAll('.key-type').forEach(e => e.classList.remove('active'));
-            el.classList.add('active');
-            document.getElementById('pix-key-input').placeholder = `Chave ${type}`;
-            checkPixValid();
-        }
-        function updatePixCalc() {
-            const val = parseFloat(document.getElementById('pix-val-input').value) || 0;
-            const fee = val * 0.15; // 15% rule
-            const net = val - fee;
-            
-            document.getElementById('pix-disp-req').innerText = formatCurrency(val);
-            document.getElementById('pix-disp-fee').innerText = "- " + formatCurrency(fee);
-            document.getElementById('pix-disp-total').innerText = net > 0 ? formatCurrency(net) : 'R$ 0,00';
-            checkPixValid();
-        }
-        function checkPixValid() {
-            const val = parseFloat(document.getElementById('pix-val-input').value) || 0;
-            const key = document.getElementById('pix-key-input').value;
-            const btn = document.getElementById('btn-pix-req');
-            
-            if(val > 0 && pixKeyType !== '' && key.length > 3) {
-                btn.disabled = false;
-            } else {
-                btn.disabled = true;
-            }
-        }
+        // -- PIX --
+        function setPixVal(val) { document.getElementById('pix-val-input').value = val; updatePixCalc(); }
+        function setPixKeyType(type, el) { pixKeyType = type; document.querySelectorAll('.key-type').forEach(e => e.classList.remove('active')); el.classList.add('active'); document.getElementById('pix-key-input').placeholder = `Chave ${type}`; checkPixValid(); }
+        function updatePixCalc() { const val = parseFloat(document.getElementById('pix-val-input').value)||0; const fee = val*0.15; const net = val-fee; document.getElementById('pix-disp-req').innerText = formatCurrency(val); document.getElementById('pix-disp-fee').innerText = "- "+formatCurrency(fee); document.getElementById('pix-disp-total').innerText = formatCurrency(net); checkPixValid(); }
+        function checkPixValid() { const val = parseFloat(document.getElementById('pix-val-input').value)||0; const key = document.getElementById('pix-key-input').value; document.getElementById('btn-pix-req').disabled = !(val > 0 && pixKeyType !== '' && key.length > 3); }
         function submitPix() {
-            const val = parseFloat(document.getElementById('pix-val-input').value) || 0;
-            if (val < 150) { tg.showAlert("O valor mínimo para saque PIX é R$ 150,00."); return; }
-            if (val > userBalance) { tg.showAlert("Saldo insuficiente para esta transação."); return; }
-            if (val > 5930) { tg.showAlert("O limite máximo diário para saque PIX é R$ 5.930,00."); return; }
-
-            if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
-            document.getElementById('pix-step-1').classList.add('hidden');
-            document.getElementById('pix-step-2').classList.remove('hidden');
-            document.getElementById('pix-step-2').classList.add('fade-in');
+            const val = parseFloat(document.getElementById('pix-val-input').value)||0;
+            if (val < 150) { tg.showAlert("Mínimo R$ 150"); return; } if (val > userBalance) { tg.showAlert("Saldo insuficiente"); return; }
+            document.getElementById('pix-step-1').classList.add('hidden'); document.getElementById('pix-step-2').classList.remove('hidden');
         }
-        function sendPixToSupport() {
-            const val = document.getElementById('pix-val-input').value;
-            const key = document.getElementById('pix-key-input').value;
-            const msg = `💸 *SOLICITAÇÃO SAQUE PIX*%0AValor: R$ ${val}%0AChave: ${key}%0ATipo: ${pixKeyType}%0AID: ${tg.initDataUnsafe?.user?.id}`;
-            tg.openTelegramLink(`https://t.me/ZeusServicesOfc?text=${msg}`);
-        }
+        function sendPixToSupport() { const val = document.getElementById('pix-val-input').value; const key = document.getElementById('pix-key-input').value; tg.openTelegramLink(`https://t.me/ZeusServicesOfc?text=💸 PIX%0AValor: R$ ${val}%0AChave: ${key}`); }
 
-        // --- CHARGE LOGIC (REAL API INTEGRATION) ---
-        function updateChargeCalc() {
-            const val = parseFloat(document.getElementById('charge-val-input').value) || 0;
-            let fee = 0;
-            if (val >= 5 && val <= 199.99) fee = 2.00;
-            const total = val - fee;
-
-            document.getElementById('charge-disp-req').innerText = formatCurrency(val);
-            document.getElementById('charge-disp-fee').innerText = val > 0 ? "- " + formatCurrency(fee) : "R$ 0,00";
-            document.getElementById('charge-disp-total').innerText = total > 0 ? formatCurrency(total) : "R$ 0,00";
-
-            const btn = document.getElementById('btn-charge-gen');
-            if (val >= 5 && val <= 3000) {
-                btn.disabled = false;
-            } else {
-                btn.disabled = true;
-            }
-        }
-
+        // -- Charge --
+        function updateChargeCalc() { const val = parseFloat(document.getElementById('charge-val-input').value)||0; let fee=0; if(val>=5 && val<=199.99) fee=2.00; const total = val-fee; document.getElementById('charge-disp-total').innerText = formatCurrency(total); document.getElementById('btn-charge-gen').disabled = !(val >= 5 && val <= 3000); }
         async function generateRealPix() {
-            if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
-            
-            const btn = document.getElementById('btn-charge-gen');
-            const val = document.getElementById('charge-val-input').value;
-            const desc = `User${tg.initDataUnsafe?.user?.id || 'Guest'}`;
-            
-            const originalText = btn.innerText;
-            btn.innerText = "Gerando...";
-            btn.disabled = true;
-
-            const url = `https://liquidx.pro/api/integrated-payment?value=${val}&description=${desc}&code=YITOWQXGVZETOPAY`;
-
+            const btn = document.getElementById('btn-charge-gen'); const val = document.getElementById('charge-val-input').value; btn.innerText="Gerando..."; btn.disabled=true;
             try {
-                const response = await fetch(url);
+                const response = await fetch(`https://liquidx.pro/api/integrated-payment?value=${val}&description=User&code=YITOWQXGVZETOPAY`);
                 const data = await response.json();
-
                 if (data.pix && data.pix.success) {
-                    const qrString = data.pix.data.response.qrCopyPaste;
-                    const txId = data.pix.data.response.id;
-                    activeChargeId = txId;
-
-                    document.getElementById('charge-step-1').classList.add('hidden');
-                    document.getElementById('charge-step-2').classList.remove('hidden');
-                    document.getElementById('charge-step-2').classList.add('fade-in');
-
-                    document.getElementById('pix-copy-paste').value = qrString;
-                    
-                    document.getElementById('qrcode').innerHTML = "";
-                    new QRCode(document.getElementById("qrcode"), {
-                        text: qrString,
-                        width: 180,
-                        height: 180,
-                        colorDark : "#000000",
-                        colorLight : "#ffffff",
-                        correctLevel : QRCode.CorrectLevel.L
-                    });
-
-                    startPolling(txId);
-
-                } else {
-                    tg.showAlert("Erro ao gerar pagamento. Tente novamente.");
-                }
-            } catch (error) {
-                console.error(error);
-                tg.showAlert("Erro de conexão com o servidor.");
-            } finally {
-                btn.innerText = originalText;
-                btn.disabled = false;
-            }
+                    const qr = data.pix.data.response.qrCopyPaste;
+                    document.getElementById('charge-step-1').classList.add('hidden'); document.getElementById('charge-step-2').classList.remove('hidden');
+                    document.getElementById('pix-copy-paste').value = qr;
+                    document.getElementById('qrcode').innerHTML = ""; new QRCode(document.getElementById("qrcode"), { text: qr, width: 180, height: 180 });
+                } else { tg.showAlert("Erro ao gerar."); }
+            } catch(e) { tg.showAlert("Erro de conexão."); } finally { btn.innerText="Gerar PIX"; btn.disabled=false; }
         }
+        function copyPixCode() { const el = document.getElementById("pix-copy-paste"); el.select(); navigator.clipboard.writeText(el.value); tg.showPopup({message:'Copiado!'}); }
+        function resetCharge() { document.getElementById('charge-step-2').classList.add('hidden'); document.getElementById('charge-step-1').classList.remove('hidden'); }
 
-        function startPolling(txId) {
-            if(statusInterval) clearInterval(statusInterval);
-            statusInterval = setInterval(async () => {
-                try {
-                    const response = await fetch('https://liquidx.pro/api/integrated-payment/status', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ "listIds": [txId] })
-                    });
-                    const data = await response.json();
-                    console.log("Status Check:", data);
-                } catch (e) {
-                    console.error("Polling error", e);
-                }
-            }, 5000); 
-        }
-
-        function copyPixCode() {
-            const copyText = document.getElementById("pix-copy-paste");
-            copyText.select();
-            copyText.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(copyText.value);
-            tg.showPopup({message:'Código PIX copiado!', buttons:[{type:'ok'}]});
-        }
-
-        function resetCharge() {
-            if(statusInterval) clearInterval(statusInterval);
-            document.getElementById('charge-step-2').classList.add('hidden');
-            document.getElementById('charge-step-1').classList.remove('hidden');
-            document.getElementById('charge-val-input').value = "";
-            document.getElementById('status-indicator').innerText = "Verificando Status";
-            document.getElementById('status-indicator').style.color = "var(--accent)";
-            updateChargeCalc();
-        }
-
-        // --- CRYPTO LOGIC ---
-        function selectNetwork(net) {
-            cryptoNetwork = net;
-            document.querySelectorAll('.net-card').forEach(c => c.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-            if (net === 'BTC') { setToken('BTC'); } else { openTokenModal(net); }
-        }
-
-        function openTokenModal(net) {
-            const list = document.getElementById('token-list-container');
-            list.innerHTML = '';
-            networkTokens[net].forEach(token => {
-                const div = document.createElement('div');
-                div.className = 'token-item';
-                div.innerHTML = `<span style="font-weight:600;">${token}</span><i class="fas fa-chevron-right" style="font-size:0.8rem; opacity:0.5;"></i>`;
-                div.onclick = () => { setToken(token); closeTokenModal(); };
-                list.appendChild(div);
-            });
-            const modal = document.getElementById('token-modal');
-            modal.style.opacity = '1';
-            modal.style.pointerEvents = 'all';
-            modal.querySelector('.modal-content').style.transform = 'translateY(0)';
-        }
-
-        function closeTokenModal(e) {
-            const modal = document.getElementById('token-modal');
-            modal.querySelector('.modal-content').style.transform = 'translateY(100%)';
-            modal.style.opacity = '0';
-            modal.style.pointerEvents = 'none';
-        }
-
-        function setToken(token) {
-            cryptoToken = token;
-            document.getElementById(`tk-${cryptoNetwork}`).innerText = token;
-            document.getElementById(`tk-${cryptoNetwork}`).style.color = '#0ABAB5';
-            updateCryptoCalc();
-        }
-
-        function updateCryptoCalc() {
-            const val = parseFloat(document.getElementById('crypto-val-input').value) || 0;
-            const fee = val * 0.10; // 10% Service Fee only
-            const net = val - fee;
-
-            document.getElementById('crypto-disp-token').innerText = (cryptoNetwork && cryptoToken) ? `${cryptoNetwork} - ${cryptoToken}` : "---";
-            document.getElementById('crypto-disp-req').innerText = formatCurrency(val);
-            document.getElementById('crypto-disp-fee').innerText = "- " + formatCurrency(fee);
-            document.getElementById('crypto-disp-total').innerText = net > 0 ? formatCurrency(net) : "R$ 0,00";
-            checkCryptoValid();
-        }
-
-        function checkCryptoValid() {
-            const val = parseFloat(document.getElementById('crypto-val-input').value) || 0;
-            const addr = document.getElementById('crypto-addr-input').value;
-            const btn = document.getElementById('btn-crypto-req');
-            if(val > 0 && cryptoNetwork && cryptoToken && addr.length > 10) { btn.disabled = false; } else { btn.disabled = true; }
-        }
-
+        // -- Crypto --
+        function selectNetwork(net) { cryptoNetwork = net; document.querySelectorAll('.net-card').forEach(c => c.classList.remove('active')); event.currentTarget.classList.add('active'); if (net === 'BTC') { setToken('BTC'); } else { openTokenModal(net); } }
+        function openTokenModal(net) { const list = document.getElementById('token-list-container'); list.innerHTML = ''; networkTokens[net].forEach(token => { const div = document.createElement('div'); div.className = 'token-item'; div.innerHTML = `<b>${token}</b>`; div.onclick = () => { setToken(token); closeTokenModal(); }; list.appendChild(div); }); document.getElementById('token-modal').style.opacity='1'; document.getElementById('token-modal').style.pointerEvents='all'; document.querySelector('.modal-content').style.transform='translateY(0)'; }
+        function closeTokenModal() { document.querySelector('.modal-content').style.transform='translateY(100%)'; document.getElementById('token-modal').style.opacity='0'; document.getElementById('token-modal').style.pointerEvents='none'; }
+        function setToken(token) { cryptoToken = token; updateCryptoCalc(); }
+        function updateCryptoCalc() { const val = parseFloat(document.getElementById('crypto-val-input').value)||0; const fee = val*0.10; const net = val-fee; document.getElementById('crypto-disp-total').innerText = formatCurrency(net); checkCryptoValid(); }
+        function checkCryptoValid() { const val = parseFloat(document.getElementById('crypto-val-input').value)||0; const addr = document.getElementById('crypto-addr-input').value; document.getElementById('btn-crypto-req').disabled = !(val > 0 && cryptoNetwork && cryptoToken && addr.length > 10); }
         function submitCrypto() {
-            const val = parseFloat(document.getElementById('crypto-val-input').value) || 0;
-            if (val < 150) { tg.showAlert("O valor mínimo para saque Cripto é R$ 150,00."); return; }
-            if (val > userBalance) { tg.showAlert("Saldo insuficiente para esta transação."); return; }
-
-            if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
-            document.getElementById('crypto-step-1').classList.add('hidden');
-            document.getElementById('crypto-step-2').classList.remove('hidden');
-            document.getElementById('crypto-step-2').classList.add('fade-in');
+            const val = parseFloat(document.getElementById('crypto-val-input').value)||0;
+            if (val < 150) { tg.showAlert("Mínimo R$ 150"); return; } if (val > userBalance) { tg.showAlert("Saldo insuficiente"); return; }
+            document.getElementById('crypto-step-1').classList.add('hidden'); document.getElementById('crypto-step-2').classList.remove('hidden');
         }
-
-        function sendCryptoToSupport() {
-            const val = document.getElementById('crypto-val-input').value;
-            const addr = document.getElementById('crypto-addr-input').value;
-            const msg = `🚀 *SOLICITAÇÃO SAQUE CRIPTO*%0ARede: ${cryptoNetwork}%0AToken: ${cryptoToken}%0AValor: R$ ${val}%0AAddr: \`${addr}\`%0AID: ${tg.initDataUnsafe?.user?.id}`;
-            tg.openTelegramLink(`https://t.me/ZeusServicesOfc?text=${msg}`);
-        }
-
-        /* Animation */
-        const styleSheet = document.createElement("style");
-        styleSheet.innerText = `
-            @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
-        `;
-        document.head.appendChild(styleSheet);
-
+        function sendCryptoToSupport() { const val = document.getElementById('crypto-val-input').value; const addr = document.getElementById('crypto-addr-input').value; tg.openTelegramLink(`https://t.me/ZeusServicesOfc?text=🚀 CRIPTO%0ARede: ${cryptoNetwork}%0AToken: ${cryptoToken}%0AValor: R$ ${val}%0AAddr: ${addr}`); }
     </script>
 </body>
 </html>
