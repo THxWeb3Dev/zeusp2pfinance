@@ -42,14 +42,19 @@ def enviar_boas_vindas(message):
         f"⚡ <b>Olá, {user_first_name}!</b>\n\n"
         "Seja bem-vindo ao <b>ZEUS⚡️P2P | Finance</b>.\n\n"
         "Somos o futuro das finanças descentralizadas. "
-        "Realize saques PIX, Cripto e pague Boletos sem burocracia e sem KYC.\n\n"
-        "👇 <b>Clique abaixo para acessar o App:</b>"
+        
+        "Realize Depósitos, Cobranças e Saques via PIX.
+        "Transfira e Saque via Cripto.\n\n"
+        "Pague Boletos.\n\n"
+        "Tudo isso sem burocracias e sem KYC.\n\n"
+        
+        "👇 <b>Clique abaixo para acessar o Gateway:</b>"
     )
 
     # Criação do botão que abre o Mini App
     markup = InlineKeyboardMarkup()
     # O botão WebApp precisa de HTTPS (GitHub Pages fornece isso)
-    botao_app = InlineKeyboardButton(text="📱 Acessar ZEUS App", web_app=WebAppInfo(url=APP_URL))
+    botao_app = InlineKeyboardButton(text="🏦 Acessar Gateway | Banking", web_app=WebAppInfo(url=APP_URL))
     markup.add(botao_app)
 
     # Envia a mensagem
