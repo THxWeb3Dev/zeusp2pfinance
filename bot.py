@@ -64,5 +64,15 @@ def enviar_boas_vindas(message):
 
 # --- INICIALIZAÇÃO ---
 if __name__ == "__main__":
-    keep_alive() 
-    bot.infinity_polling()
+    keep_alive() # Inicia o servidor web
+    
+    # CORREÇÃO DO ERRO 409:
+    print("♻️ Limpando conflitos de webhook...")
+    bot.remove_webhook() # Remove qualquer conexão presa anterior
+    
+    import time
+    time.sleep(1) # Espera 1 segundo para garantir
+    
+    print("🚀 Bot iniciado!")
+    # skip_pending=True ignora mensagens velhas acumuladas para não travar na inicialização
+    bot.infinity_polling(skip_pending=True) 
