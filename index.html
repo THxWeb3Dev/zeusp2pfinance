@@ -9,91 +9,74 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* --- CSS CRÍTICO --- */
+        /* --- CSS OTIMIZADO --- */
         :root { --primary: #0ABAB5; --bg-dark: #020205; --text-main: #ffffff; --glass: rgba(255,255,255,0.05); }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-dark); color: var(--text-main); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
-        /* UTILITÁRIOS */
-        .hidden { display: none !important; opacity: 0; pointer-events: none; }
+        /* UTILITÁRIOS VISUAIS */
+        .hidden { display: none !important; }
         .fade-in { animation: fadeIn 0.3s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* ESTILOS GERAIS */
-        .btn-primary { background: linear-gradient(135deg, #0ABAB5, #0F52BA); color: #fff; border: none; padding: 16px; border-radius: 14px; font-weight: 600; width: 100%; margin-top:10px; cursor: pointer; box-shadow: 0 4px 15px rgba(10, 186, 181, 0.3); }
+        /* INPUTS & BOTOES */
+        .btn-primary { background: linear-gradient(135deg, #0ABAB5, #0F52BA); color: #fff; border: none; padding: 16px; border-radius: 14px; font-weight: 600; width: 100%; margin-top:10px; cursor: pointer; box-shadow: 0 4px 15px rgba(10, 186, 181, 0.3); position: relative; z-index: 50; }
         .btn-primary:active { transform: scale(0.98); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
         .custom-input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); padding: 14px; border-radius: 12px; color: #fff; margin-bottom: 10px; outline: none; font-size: 1rem; }
         
         /* LOGIN */
         .login-card { background: rgba(20, 20, 30, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 25px; margin-bottom: 20px; text-align: center; backdrop-filter: blur(10px); }
         .login-title { font-family: 'Rajdhani'; font-weight: 700; font-size: 1.2rem; margin-bottom: 20px; text-align: left; display: flex; align-items: center; gap: 10px; color: #fff; }
 
-        /* DASHBOARD */
+        /* DASHBOARD - Correção de Z-Index para Clique */
         .screen-header { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; }
         .nav-avatar { width: 42px; height: 42px; border-radius: 50%; background: #333; border: 2px solid var(--primary); background-image: url('https://ui-avatars.com/api/?name=User&background=0ABAB5&color=fff'); background-size: cover; }
         .stat-card-main { background: linear-gradient(180deg, rgba(0, 224, 150, 0.1), rgba(0,0,0,0)); border: 1px solid rgba(0, 224, 150, 0.3); border-radius: 24px; padding: 20px; margin: 0 20px 20px 20px; }
         
-        /* MENU GRID (CORRIGIDO PARA CLIQUE) */
-        .actions-menu { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 20px; margin-bottom: 30px; position: relative; z-index: 10; }
-        .menu-item { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 0.75rem; color: #ccc; cursor: pointer; user-select: none; }
-        .menu-btn { width: 55px; height: 55px; background: rgba(255,255,255,0.08); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: #fff; transition: 0.2s; border: 1px solid rgba(255,255,255,0.05); pointer-events: none; /* Garante que o clique passe para o pai ou seja tratado corretamente */ }
-        .menu-item:active .menu-btn { background: rgba(10, 186, 181, 0.2); border-color: var(--primary); transform: scale(0.95); }
+        .actions-menu { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 20px; margin-bottom: 30px; position: relative; z-index: 100; }
+        .menu-item { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 0.75rem; color: #ccc; cursor: pointer; }
+        .menu-btn { width: 55px; height: 55px; background: rgba(255,255,255,0.08); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: #fff; transition: 0.2s; border: 1px solid rgba(255,255,255,0.05); pointer-events: none; }
+        .menu-item:active .menu-btn { background: rgba(10, 186, 181, 0.2); border-color: var(--primary); }
 
-        /* TELAS INTERNAS */
-        .screen-content { padding: 20px; padding-bottom: 80px; overflow-y: auto; height: 100%; position: relative; z-index: 20; }
-        .back-btn { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        /* SECTIONS - Correção de Sobreposição */
+        section { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow-y: auto; background: var(--bg-dark); }
+        .screen-content { padding: 20px; padding-bottom: 80px; }
+        
+        /* ELEMENTOS UI */
+        .back-btn { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; z-index: 50; }
         .calc-card { background: rgba(255,255,255,0.03); border-radius: 16px; padding: 15px; margin: 15px 0; border: 1px solid rgba(255,255,255,0.1); }
         .calc-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; color: #aaa; }
         .val-display { font-weight: 700; color: #fff; font-family: 'Rajdhani'; }
         .info-card { background: rgba(255,255,255,0.03); border-left: 3px solid var(--accent); padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 0.75rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
 
-        /* EXTRAS */
         .chip-grid { display: flex; gap: 8px; margin-bottom: 15px; }
         .chip-btn { flex: 1; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px; text-align: center; font-size: 0.8rem; cursor: pointer; border: 1px solid transparent; }
         .chip-btn.active { border-color: var(--primary); background: rgba(10, 186, 181, 0.15); color: var(--primary); }
 
         /* MODALS */
-        .modal-overlay, .rules-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.9); z-index: 9999; 
-            display: flex; align-items: center; justify-content: center; 
-            opacity: 0; pointer-events: none; transition: opacity 0.3s;
-        }
-        .rules-card {
-            background: rgba(20, 20, 30, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 24px; padding: 25px; width: 90%; max-width: 380px; max-height: 80vh;
-            overflow-y: auto; transform: rotateX(10deg); transition: transform 0.4s;
-        }
-        .modal-content {
-            background: #1a1a20; width: 100%; max-width: 450px; border-top-left-radius: 25px; border-top-right-radius: 25px;
-            padding: 25px; transform: translateY(100%); transition: transform 0.3s; border-top: 1px solid var(--glass);
-            position: absolute; bottom: 0;
-        }
+        .modal-overlay, .rules-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .rules-card { background: rgba(20, 20, 30, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 25px; width: 90%; max-width: 380px; max-height: 80vh; overflow-y: auto; transform: rotateX(10deg); transition: transform 0.4s; }
+        .modal-content { background: #1a1a20; width: 100%; max-width: 450px; border-top-left-radius: 25px; border-top-right-radius: 25px; padding: 25px; transform: translateY(100%); transition: transform 0.3s; border-top: 1px solid var(--glass); position: absolute; bottom: 0; }
         .rules-content p { font-size: 0.85rem; color: #ddd; margin-bottom: 12px; line-height: 1.5; }
         .rules-content h4 { color: var(--accent); margin-top: 15px; margin-bottom: 8px; font-family: 'Rajdhani'; }
 
-        /* NETWORK GRID */
+        /* QR CODE IMAGE */
+        #qr-image { width: 180px; height: 180px; border-radius: 10px; margin: 20px auto; display: block; border: 4px solid #fff; }
+
+        /* GRID E ANIMACOES */
         .networks-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
         .net-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px 5px; text-align: center; cursor: pointer; transition: 0.2s; }
         .net-card.active { border-color: var(--primary); background: rgba(10, 186, 181, 0.15); }
         .net-name { display: block; font-family: 'Rajdhani'; font-weight: 700; font-size: 0.9rem; color: #fff; }
-        .net-token { font-size: 0.7rem; color: var(--primary); display: block; margin-top: 2px; }
-
-        /* HERO ANIMATION */
-        @keyframes heroFloat {
-            0% { transform: translateY(0); filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.3)); }
-            50% { transform: translateY(-10px); filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.6)); }
-            100% { transform: translateY(0); filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.3)); }
-        }
         .hero-logo-animate { animation: heroFloat 3.5s ease-in-out infinite; }
+        @keyframes heroFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         
-        /* ANALYTICS & FEATURES */
         .stat-grid-colored { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
         .stat-box { padding: 20px; border-radius: 20px; display: flex; flex-direction: column; justify-content: center; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); min-height: 110px; }
         .box-pink { border-color: rgba(255, 71, 87, 0.3); background: rgba(255, 71, 87, 0.05); } .box-purple { border-color: rgba(136, 84, 208, 0.3); background: rgba(136, 84, 208, 0.05); }
         .box-orange { border-color: rgba(250, 130, 49, 0.3); background: rgba(250, 130, 49, 0.05); } .box-blue { border-color: rgba(56, 103, 214, 0.3); background: rgba(56, 103, 214, 0.05); }
         .stat-title { font-size: 0.7rem; font-weight: 600; margin-bottom: 8px; opacity: 0.8; } .stat-value { font-family: 'Rajdhani'; font-size: 1.6rem; font-weight: 700; color: #fff; }
-        
         .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 15px; margin-bottom: 30px; }
         .feature-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 12px; display: flex; flex-direction: column; align-items: center; text-align: center; min-height: 100px; justify-content: center; }
         .feature-icon { font-size: 1.4rem; color: var(--primary); margin-bottom: 8px; } .feature-title { font-weight: 600; font-size: 0.85rem; margin-bottom: 4px; } .feature-desc { font-size: 0.65rem; color: rgba(255,255,255,0.6); }
@@ -113,9 +96,9 @@
             <h3 style="font-family:'Rajdhani'; font-size:1.5rem; margin-bottom:20px; text-align:center; color:#fff;"><i class="fas fa-file-contract"></i> REGRAS</h3>
             <div class="rules-content">
                 <p><strong>📄 | REGRAS GATEWAY • ZEUS:</strong></p>
-                <h4>📥 — Depósitos/Pagamentos PIX sem KYC:</h4><p>Mínimo: R$5,00 | Máximo: R$3.000,00<br>Valores por CPF ou CNPJ.<br>Cada CPF/CNPJ pode pagar até R$6.000,00 a cada 24h.</p>
+                <h4>📥 — Depósitos/Pagamentos PIX sem KYC:</h4><p>Mínimo: R$5,00 | Máximo: R$3.000,00</p>
                 <h4>♻️ — Taxas Depósitos/Pagamentos PIX:</h4><p>De R$5,00 à R$199,99 = R$2,00 de Taxa.<br>Acima de R$200,00 = 0 Taxa.</p>
-                <h4>📤 — Saques/Retiradas PIX sem KYC:</h4><p>Mínimo: R$150,00 | Máximo: R$5.930,00<br>Valores por CPF ou CNPJ.</p>
+                <h4>📤 — Saques/Retiradas PIX sem KYC:</h4><p>Mínimo: R$150,00 | Máximo: R$5.930,00</p>
                 <h4>🧾 — Pagamento de Boleto sem KYC:</h4><p>Limite: Até R$ 20.000,00 por boleto.</p>
                 <h4>♻️ — Taxas Saque/Retirada:</h4><p>BOLETO = 20%<br>PIX = 15%<br>CRYPTO = 10%</p>
                 <div style="margin-top:20px; font-size:0.8rem; color:var(--primary);">》@ZeusServicesOfc<br>》@THxWeb3Dev<br>》Canal: https://t.me/ZeusP2PFinance</div>
@@ -125,7 +108,7 @@
     </div>
 
     <section id="login-screen">
-        <div class="screen-content" style="display:flex; flex-direction:column; justify-content:center; height:100vh; padding-bottom:0;">
+        <div class="screen-content" style="display:flex; flex-direction:column; justify-content:center; height:100vh;">
             <div style="display:flex; justify-content:center; margin-bottom:40px;">
                 <div class="hero-logo-animate" style="width:140px; height:140px; background:linear-gradient(180deg, rgba(10,186,181,0.1), rgba(15,82,186,0.2)); border-radius:35px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,0.1); box-shadow:0 0 40px rgba(10,186,181,0.15);">
                    <i class="fas fa-bolt" style="font-size:4.5rem; color:var(--accent); filter:drop-shadow(0 0 20px rgba(255,215,0,0.5));"></i>
@@ -148,7 +131,7 @@
             </div>
             <div style="display:flex; gap:10px;">
                 <div onclick="openRules()" style="width:35px; height:35px; border-radius:50%; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fas fa-file-contract"></i></div>
-                <div onclick="openAnalytics()" style="width:35px; height:35px; border-radius:50%; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fas fa-chart-pie"></i></div>
+                <div onclick="tg.showAlert('Histórico indisponível.')" style="width:35px; height:35px; border-radius:50%; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fas fa-chart-pie"></i></div>
             </div>
         </div>
         
@@ -223,11 +206,11 @@
         <div class="screen-content">
             <div id="charge-step-1">
                 <label>Valor</label><input type="number" id="charge-val-input" class="custom-input" placeholder="0,00" oninput="updateChargeCalc()">
-                <div class="info-card"><strong>Taxas e Regras:</strong><br>• Mínimo: R$ 5,00 | Máximo: R$ 3.000,00<br>• R$ 5,00 a R$ 199,99: <strong>R$ 2,00 taxa</strong><br>• Acima de R$ 200,00: <strong>Taxa ZERO</strong></div>
+                <div class="info-card"><strong>Taxas:</strong><br>• R$ 5,00 a R$ 199,99: <strong>R$ 2,00</strong><br>• Acima de R$ 200,00: <strong>Grátis</strong></div>
                 <div class="calc-card"><div class="calc-row"><span>Receber</span><span class="val-display" id="charge-disp-total">R$ 0,00</span></div></div>
                 <button id="btn-charge-gen" class="btn-primary" disabled onclick="generateRealPix()">Gerar PIX</button>
             </div>
-            <div id="charge-step-2" class="hidden" style="text-align:center;"><div id="qrcode" style="margin:20px auto; width:180px;"></div><textarea id="pix-copy-paste" class="custom-input" readonly></textarea><button class="btn-primary" onclick="copyPixCode()">Copiar Código PIX</button><button style="background:none; border:none; color:#aaa; margin-top:10px;" onclick="resetCharge()">Voltar</button></div>
+            <div id="charge-step-2" class="hidden" style="text-align:center;"><h3 style="margin-bottom:10px;">Pagamento</h3><div id="status-indicator" style="color:var(--accent); font-size:0.8rem; margin-bottom:10px;">Aguardando...</div><img id="qr-image" src="" alt="QR Code"><textarea id="pix-copy-paste" class="custom-input" readonly style="height:80px;"></textarea><button class="btn-primary" onclick="copyPixCode()">Copiar Código PIX</button><button style="background:none; border:none; color:#aaa; margin-top:10px;" onclick="resetCharge()">Voltar</button></div>
         </div>
     </section>
 
@@ -263,7 +246,6 @@
     </section>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
@@ -274,15 +256,15 @@
 
         let currentScreen = 'login-screen';
         let pixKeyType = '', cryptoNetwork = '', cryptoToken = '', activeChargeId = null, statusInterval = null, chartInstance = null;
-        let userBalance = 0.00; // SALDO REAL INICIAL
+        let userBalance = 0.00;
         const networkTokens = { 'BTC': ['BTC'], 'BSC': ['BNB', 'USDT', 'USDC'], 'POL': ['POLYGON', 'USDT', 'USDC'], 'BASE': ['ETH', 'USDC'], 'ETH': ['ETHEREUM', 'USDT', 'USDC', 'DAI', 'USDE'], 'SOL': ['SOLANA', 'USDT', 'USDC'] };
 
-        // --- NAVEGAÇÃO GLOBAL ---
+        // --- NAVEGAÇÃO SEGURA ---
         function enterApp() {
             const userInput = document.getElementById('login-input').value;
             if(userInput) document.getElementById('dash-name').innerText = userInput;
-            if(window.Telegram?.WebApp?.HapticFeedback) window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
             
+            // Força ocultar login e mostrar main
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('main-app').classList.remove('hidden');
             document.getElementById('main-app').classList.add('fade-in');
@@ -290,21 +272,34 @@
         }
 
         function backToMain() {
-            document.querySelectorAll('section').forEach(el => {
-                if(el.id !== 'main-app') el.classList.add('hidden');
+            // Esconde todas as seções exceto Main
+            const sections = document.querySelectorAll('section');
+            sections.forEach(sec => {
+                if (sec.id !== 'main-app') sec.classList.add('hidden');
             });
-            document.getElementById('main-app').classList.remove('hidden');
+            
+            const main = document.getElementById('main-app');
+            main.classList.remove('hidden');
+            main.classList.add('fade-in');
+            currentScreen = 'main-app';
+            
+            // Reseta passos das telas
+            document.getElementById('pix-step-1').classList.remove('hidden'); document.getElementById('pix-step-2').classList.add('hidden');
+            document.getElementById('charge-step-1').classList.remove('hidden'); document.getElementById('charge-step-2').classList.add('hidden');
+            document.getElementById('boleto-step-1').classList.remove('hidden'); document.getElementById('boleto-step-2').classList.add('hidden');
+            document.getElementById('crypto-step-1').classList.remove('hidden'); document.getElementById('crypto-step-2').classList.add('hidden');
+            
+            if(statusInterval) clearInterval(statusInterval);
         }
 
-        // Função tornada global e segura
         function openScreen(id) {
             document.getElementById(currentScreen).classList.add('hidden');
             document.getElementById(id).classList.remove('hidden');
             document.getElementById(id).classList.add('fade-in');
             currentScreen = id;
-            if(window.Telegram?.WebApp?.HapticFeedback) window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
         }
 
+        // --- NEGÓCIO ---
         function formatCurrency(val) { return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
         function openRules() { document.getElementById('rules-modal').style.opacity='1'; document.getElementById('rules-modal').style.pointerEvents='all'; document.querySelector('.rules-card').style.transform='rotateX(0deg)'; }
         function closeRules() { document.getElementById('rules-modal').querySelector('.rules-card').style.transform='rotateX(10deg)'; document.getElementById('rules-modal').style.opacity='0'; document.getElementById('rules-modal').style.pointerEvents='none'; }
@@ -315,22 +310,18 @@
             const ctx = document.getElementById('performanceChart').getContext('2d');
             const gradient = ctx.createLinearGradient(0, 0, 0, 100);
             gradient.addColorStop(0, 'rgba(0, 224, 150, 0.8)'); gradient.addColorStop(1, 'rgba(0, 224, 150, 0.2)');
-            chartInstance = new Chart(ctx, { type: 'bar', data: { labels: ['S', 'T', 'Q', 'Q', 'S', 'S', 'D', 'S', 'T', 'Q'], datasets: [{ label: 'Volume', data: [20, 35, 40, 30, 45, 55, 40, 60, 50, 65], backgroundColor: gradient, borderRadius: 4, barThickness: 12 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } }, animation: { duration: 1500, easing: 'easeOutQuart' } } });
+            chartInstance = new Chart(ctx, { type: 'bar', data: { labels: ['S', 'T', 'Q', 'Q', 'S', 'S', 'D', 'S', 'T', 'Q'], datasets: [{ label: 'Volume', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], backgroundColor: gradient, borderRadius: 4, barThickness: 12 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } }, animation: { duration: 1500, easing: 'easeOutQuart' } } });
         }
 
-        // -- Boleto --
+        // -- BOLETO --
         function updateBoletoCalc() { const val = parseFloat(document.getElementById('boleto-val-input').value)||0; const fee = val*0.20; const total = val+fee; document.getElementById('boleto-disp-total').innerText = formatCurrency(total); checkBoletoValid(); }
         function checkBoletoValid() { const val = parseFloat(document.getElementById('boleto-val-input').value)||0; const code = document.getElementById('boleto-code-input').value; document.getElementById('btn-boleto-req').disabled = !(val > 0 && code.length > 5); }
         function submitBoleto() {
             const val = parseFloat(document.getElementById('boleto-val-input').value)||0; const fee = val*0.20; const total = val+fee;
-            // TRAVA DE SALDO AQUI
-            if (total > userBalance) { tg.showAlert(`Saldo insuficiente! Você precisa de ${formatCurrency(total)}`); return; }
-            if (val > 20000) { tg.showAlert("Limite máximo por boleto é R$ 20.000,00."); return; }
-            
-            if(window.Telegram?.WebApp?.HapticFeedback) window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+            if (total > userBalance) { tg.showAlert(`Saldo insuficiente! Necessário: ${formatCurrency(total)}`); return; }
             document.getElementById('boleto-step-1').classList.add('hidden'); document.getElementById('boleto-step-2').classList.remove('hidden');
         }
-        function sendBoletoToSupport() { const val = document.getElementById('boleto-val-input').value; const code = document.getElementById('boleto-code-input').value; tg.openTelegramLink(`https://t.me/ZeusServicesOfc?text=🧾 *BOLETO SOLICITADO*%0AValor: R$ ${val}%0ACodigo: \`${code}\``); }
+        function sendBoletoToSupport() { const val = document.getElementById('boleto-val-input').value; const code = document.getElementById('boleto-code-input').value; tg.openTelegramLink(`https://t.me/ZeusServicesOfc?text=🧾 *BOLETO*%0AValor: R$ ${val}%0ACodigo: \`${code}\``); }
 
         // -- PIX --
         function setPixVal(val) { document.getElementById('pix-val-input').value = val; updatePixCalc(); }
@@ -339,53 +330,67 @@
         function checkPixValid() { const val = parseFloat(document.getElementById('pix-val-input').value)||0; const key = document.getElementById('pix-key-input').value; document.getElementById('btn-pix-req').disabled = !(val > 0 && pixKeyType !== '' && key.length > 3); }
         function submitPix() {
             const val = parseFloat(document.getElementById('pix-val-input').value)||0;
-            // TRAVA DE SALDO AQUI
-            if (val > userBalance) { tg.showAlert(`Saldo insuficiente! Disponível: ${formatCurrency(userBalance)}`); return; }
-            if (val < 150) { tg.showAlert("O valor mínimo para saque PIX é R$ 150,00."); return; }
-            
-            if(window.Telegram?.WebApp?.HapticFeedback) window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+            if (val > userBalance) { tg.showAlert(`Saldo insuficiente!`); return; }
+            if (val < 150) { tg.showAlert("Mínimo R$ 150,00."); return; }
             document.getElementById('pix-step-1').classList.add('hidden'); document.getElementById('pix-step-2').classList.remove('hidden');
         }
-        function sendPixToSupport() { const val = document.getElementById('pix-val-input').value; const key = document.getElementById('pix-key-input').value; tg.openTelegramLink(`https://t.me/ZeusServicesOfc?text=💸 *SAQUE PIX*%0AValor: R$ ${val}%0AChave: ${key}%0ATipo: ${pixKeyType}`); }
+        function sendPixToSupport() { const val = document.getElementById('pix-val-input').value; const key = document.getElementById('pix-key-input').value; tg.openTelegramLink(`https://t.me/ZeusServicesOfc?text=💸 *PIX*%0AValor: R$ ${val}%0AChave: ${key}`); }
 
-        // -- Charge --
+        // -- CHARGE (COM CORREÇÃO DE QR CODE) --
         function updateChargeCalc() { const val = parseFloat(document.getElementById('charge-val-input').value)||0; let fee=0; if(val>=5 && val<=199.99) fee=2.00; const total = val-fee; document.getElementById('charge-disp-total').innerText = formatCurrency(total); document.getElementById('btn-charge-gen').disabled = !(val >= 5 && val <= 3000); }
+        
         async function generateRealPix() {
             const btn = document.getElementById('btn-charge-gen'); const val = document.getElementById('charge-val-input').value; btn.innerText="Gerando..."; btn.disabled=true;
             try {
                 const response = await fetch(`https://liquidx.pro/api/integrated-payment?value=${val}&description=User&code=YITOWQXGVZETOPAY`);
                 const data = await response.json();
-                if (data.pix && data.pix.success) {
-                    const qr = data.pix.data.response.qrCopyPaste;
-                    activeChargeId = data.pix.data.response.id; 
-                    document.getElementById('charge-step-1').classList.add('hidden'); document.getElementById('charge-step-2').classList.remove('hidden');
-                    document.getElementById('pix-copy-paste').value = qr;
-                    document.getElementById('qrcode').innerHTML = ""; new QRCode(document.getElementById("qrcode"), { text: qr, width: 180, height: 180 });
-                    startPolling(activeChargeId, parseFloat(val));
-                } else { tg.showAlert("Erro ao gerar."); }
-            } catch(e) { tg.showAlert("Erro de conexão."); } finally { btn.innerText="Gerar PIX"; btn.disabled=false; }
+                
+                // Se a API retornou o copyPaste, sucesso!
+                if (data.pix && data.pix.data && data.pix.data.response.qrCopyPaste) {
+                    const qrCode = data.pix.data.response.qrCopyPaste;
+                    const txId = data.pix.data.response.id;
+                    
+                    document.getElementById('charge-step-1').classList.add('hidden'); 
+                    document.getElementById('charge-step-2').classList.remove('hidden');
+                    
+                    document.getElementById('pix-copy-paste').value = qrCode;
+                    // GERAÇÃO DE QR CODE VIA API EXTERNA (Infalível)
+                    document.getElementById('qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrCode)}`;
+                    
+                    startPolling(txId, parseFloat(val));
+                } else {
+                    tg.showAlert("Erro na API. Tente novamente.");
+                }
+            } catch(e) {
+                // Se cair aqui, a API falhou (CORS ou offline)
+                tg.showAlert("Conexão instável. Tente mais tarde.");
+            } finally { 
+                btn.innerText="Gerar PIX"; btn.disabled=false; 
+            }
         }
+
         function startPolling(txId, amount) {
             if(statusInterval) clearInterval(statusInterval);
             statusInterval = setInterval(async () => {
                 try { 
                     const response = await fetch('https://liquidx.pro/api/integrated-payment/status', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ "listIds": [txId] }) }); 
                     const data = await response.json(); 
-                    if (data && data.length > 0 && data[0].status === 'PAID') { 
+                    if (data && data.length > 0 && data[0].status === 'PAID') {
                         clearInterval(statusInterval);
                         userBalance += amount;
                         document.getElementById('dash-balance').innerText = formatCurrency(userBalance);
-                        if(window.Telegram?.WebApp?.HapticFeedback) window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
-                        tg.showPopup({message: `Depósito de ${formatCurrency(amount)} confirmado!`});
+                        document.getElementById('status-indicator').innerText = "PAGO!";
+                        document.getElementById('status-indicator').style.color = "#00E096";
+                        tg.showPopup({message: `Recebido: ${formatCurrency(amount)}`});
                         setTimeout(resetCharge, 3000);
                     }
-                } catch (e) { console.error("Polling...", e); }
+                } catch (e) { console.log("Polling..."); }
             }, 5000); 
         }
         function copyPixCode() { const el = document.getElementById("pix-copy-paste"); el.select(); navigator.clipboard.writeText(el.value); tg.showPopup({message:'Copiado!'}); }
         function resetCharge() { if(statusInterval) clearInterval(statusInterval); document.getElementById('charge-step-2').classList.add('hidden'); document.getElementById('charge-step-1').classList.remove('hidden'); document.getElementById('charge-val-input').value = ""; updateChargeCalc(); }
 
-        // -- Crypto --
+        // -- CRYPTO --
         function selectNetwork(net) { cryptoNetwork = net; document.querySelectorAll('.net-card').forEach(c => c.classList.remove('active')); event.currentTarget.classList.add('active'); if (net === 'BTC') { setToken('BTC'); } else { openTokenModal(net); } }
         function openTokenModal(net) { const list = document.getElementById('token-list-container'); list.innerHTML = ''; networkTokens[net].forEach(token => { const div = document.createElement('div'); div.className = 'token-item'; div.innerHTML = `<b>${token}</b>`; div.onclick = () => { setToken(token); closeTokenModal(); }; list.appendChild(div); }); document.getElementById('token-modal').style.opacity='1'; document.getElementById('token-modal').style.pointerEvents='all'; document.querySelector('.modal-content').style.transform='translateY(0)'; }
         function closeTokenModal() { document.querySelector('.modal-content').style.transform='translateY(100%)'; document.getElementById('token-modal').style.opacity='0'; document.getElementById('token-modal').style.pointerEvents='none'; }
@@ -394,14 +399,11 @@
         function checkCryptoValid() { const val = parseFloat(document.getElementById('crypto-val-input').value)||0; const addr = document.getElementById('crypto-addr-input').value; document.getElementById('btn-crypto-req').disabled = !(val > 0 && cryptoNetwork && cryptoToken && addr.length > 10); }
         function submitCrypto() {
             const val = parseFloat(document.getElementById('crypto-val-input').value)||0;
-            // TRAVA DE SALDO AQUI
-            if (val > userBalance) { tg.showAlert(`Saldo insuficiente! Disponível: ${formatCurrency(userBalance)}`); return; }
-            if (val < 150) { tg.showAlert("O valor mínimo para saque Cripto é R$ 150,00."); return; }
-            
-            if(window.Telegram?.WebApp?.HapticFeedback) window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+            if (val > userBalance) { tg.showAlert(`Saldo insuficiente!`); return; }
+            if (val < 150) { tg.showAlert("Mínimo R$ 150."); return; }
             document.getElementById('crypto-step-1').classList.add('hidden'); document.getElementById('crypto-step-2').classList.remove('hidden');
         }
-        function sendCryptoToSupport() { const val = document.getElementById('crypto-val-input').value; const addr = document.getElementById('crypto-addr-input').value; tg.openTelegramLink(`https://t.me/ZeusServicesOfc?text=🚀 *SAQUE CRIPTO*%0ARede: ${cryptoNetwork}%0AToken: ${cryptoToken}%0AValor: R$ ${val}%0AAddr: \`${addr}\``); }
+        function sendCryptoToSupport() { const val = document.getElementById('crypto-val-input').value; const addr = document.getElementById('crypto-addr-input').value; tg.openTelegramLink(`https://t.me/ZeusServicesOfc?text=🚀 *CRIPTO*%0ARede: ${cryptoNetwork}%0AToken: ${cryptoToken}%0AValor: R$ ${val}%0AAddr: ${addr}`); }
     </script>
 </body>
 </html>
