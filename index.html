@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>ZEUS⚡️P2P | Finance</title>
+    <title>ZEUS⚡️P2P</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
@@ -130,7 +130,6 @@
                    <i class="fas fa-bolt" style="font-size:4.5rem; color:var(--accent); filter:drop-shadow(0 0 20px rgba(255,215,0,0.5));"></i>
                </div>
            </div>
-
            <div class="login-card">
                 <div class="login-title"><i class="fas fa-user-circle" style="color:var(--primary);"></i> Acessar Conta</div>
                 <input type="text" id="login-input" class="custom-input" placeholder="Usuário">
@@ -214,7 +213,7 @@
                 <div class="calc-card"><div class="calc-row"><span>Valor Solicitado</span><span class="val-display" id="pix-disp-req">R$ 0,00</span></div><div class="calc-row"><span style="color:var(--color-red)">Taxa (15%)</span><span class="val-display" style="color:var(--color-red)" id="pix-disp-fee">- R$ 0,00</span></div><div class="calc-row final"><span style="color:var(--primary)">Receber</span><span class="val-display" style="color:var(--primary)" id="pix-disp-total">R$ 0,00</span></div></div>
                 <button id="btn-pix-req" class="btn-primary" disabled onclick="submitPix()">Solicitar</button>
             </div>
-            <div id="pix-step-2" class="hidden" style="text-align:center; padding-top:40px;"><i class="fas fa-check-circle" style="font-size:4rem; color:#00E096;"></i><h2>Solicitado!</h2><button class="btn-primary" onclick="sendPixToSupport()">Enviar Comprovante</button></div>
+            <div id="pix-step-2" class="hidden" style="text-align:center; padding-top:40px;"><i class="fas fa-check-circle" style="font-size:4rem; color:#00E096;"></i><h2>Solicitado!</h2><p style="color:#aaa;">Envie o comprovante para o suporte aprovar.</p><button class="btn-primary" onclick="sendPixToSupport()">Enviar Comprovante</button></div>
         </div>
     </section>
 
@@ -274,15 +273,13 @@
 
         let currentScreen = 'login-screen';
         let pixKeyType = '', cryptoNetwork = '', cryptoToken = '', activeChargeId = null, statusInterval = null, chartInstance = null;
-        let userBalance = 0.00; // SALDO REAL INICIAL (ZERO)
+        let userBalance = 0.00; // SALDO INICIAL REAL
         const networkTokens = { 'BTC': ['BTC'], 'BSC': ['BNB', 'USDT', 'USDC'], 'POL': ['POLYGON', 'USDT', 'USDC'], 'BASE': ['ETH', 'USDC'], 'ETH': ['ETHEREUM', 'USDT', 'USDC', 'DAI', 'USDE'], 'SOL': ['SOLANA', 'USDT', 'USDC'] };
 
         // --- NAVEGAÇÃO ---
         function enterApp() {
             const userInput = document.getElementById('login-input').value;
-            if(userInput) {
-                document.getElementById('dash-name').innerText = userInput;
-            }
+            if(userInput) document.getElementById('dash-name').innerText = userInput;
             if(window.Telegram?.WebApp?.HapticFeedback) window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
             
             document.getElementById('login-screen').classList.add('hidden');
@@ -306,7 +303,6 @@
             if(window.Telegram?.WebApp?.HapticFeedback) window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
         }
 
-        // --- FUNÇÕES DE NEGÓCIO ---
         function formatCurrency(val) { return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
         function openRules() { document.getElementById('rules-modal').style.opacity='1'; document.getElementById('rules-modal').style.pointerEvents='all'; document.querySelector('.rules-card').style.transform='rotateX(0deg)'; }
         function closeRules() { document.getElementById('rules-modal').querySelector('.rules-card').style.transform='rotateX(10deg)'; document.getElementById('rules-modal').style.opacity='0'; document.getElementById('rules-modal').style.pointerEvents='none'; }
@@ -325,11 +321,14 @@
         function checkBoletoValid() { const val = parseFloat(document.getElementById('boleto-val-input').value)||0; const code = document.getElementById('boleto-code-input').value; document.getElementById('btn-boleto-req').disabled = !(val > 0 && code.length > 5); }
         function submitBoleto() {
             const val = parseFloat(document.getElementById('boleto-val-input').value)||0; const fee = val*0.20; const total = val+fee;
-            if (val > 20000) { tg.showAlert("Limite máximo R$ 20.000"); return; }
-            if (total > userBalance) { tg.showAlert("Saldo insuficiente"); return; }
+            // TRAVA DE SALDO AQUI
+            if (total > userBalance) { tg.showAlert(`Saldo insuficiente. Necessário: ${formatCurrency(total)}`); return; }
+            if (val > 20000) { tg.showAlert("Limite máximo por boleto é R$ 20.000,00."); return; }
+            
+            if(window.Telegram?.WebApp?.HapticFeedback) window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
             document.getElementById('boleto-step-1').classList.add('hidden'); document.getElementById('boleto-step-2').classList.remove('hidden');
         }
-        function sendBoletoToSupport() { const val = document.getElementById('boleto-val-input').value; const code = document.getElementById('boleto-code-input').value; tg.openTelegramLink(`https://t.me/ZeusServicesOfc?text=🧾 BOLETO%0AValor: R$ ${val}%0ACodigo: ${code}`); }
+        function sendBoletoToSupport() { const val = document.getElementById('boleto-val-input').value; const code = document.getElementById('boleto-code-input').value; tg.openTelegramLink(`https://t.me/ZeusServicesOfc?text=🧾 *BOLETO*%0AValor: R$ ${val}%0ACodigo: \`${code}\``); }
 
         // -- PIX --
         function setPixVal(val) { document.getElementById('pix-val-input').value = val; updatePixCalc(); }
@@ -338,10 +337,14 @@
         function checkPixValid() { const val = parseFloat(document.getElementById('pix-val-input').value)||0; const key = document.getElementById('pix-key-input').value; document.getElementById('btn-pix-req').disabled = !(val > 0 && pixKeyType !== '' && key.length > 3); }
         function submitPix() {
             const val = parseFloat(document.getElementById('pix-val-input').value)||0;
-            if (val < 150) { tg.showAlert("Mínimo R$ 150"); return; } if (val > userBalance) { tg.showAlert("Saldo insuficiente"); return; }
+            // TRAVA DE SALDO AQUI
+            if (val > userBalance) { tg.showAlert(`Saldo insuficiente. Disponível: ${formatCurrency(userBalance)}`); return; }
+            if (val < 150) { tg.showAlert("O valor mínimo para saque PIX é R$ 150,00."); return; }
+            
+            if(window.Telegram?.WebApp?.HapticFeedback) window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
             document.getElementById('pix-step-1').classList.add('hidden'); document.getElementById('pix-step-2').classList.remove('hidden');
         }
-        function sendPixToSupport() { const val = document.getElementById('pix-val-input').value; const key = document.getElementById('pix-key-input').value; tg.openTelegramLink(`https://t.me/ZeusServicesOfc?text=💸 PIX%0AValor: R$ ${val}%0AChave: ${key}`); }
+        function sendPixToSupport() { const val = document.getElementById('pix-val-input').value; const key = document.getElementById('pix-key-input').value; tg.openTelegramLink(`https://t.me/ZeusServicesOfc?text=💸 *SAQUE PIX*%0AValor: R$ ${val}%0AChave: ${key}%0ATipo: ${pixKeyType}`); }
 
         // -- Charge --
         function updateChargeCalc() { const val = parseFloat(document.getElementById('charge-val-input').value)||0; let fee=0; if(val>=5 && val<=199.99) fee=2.00; const total = val-fee; document.getElementById('charge-disp-total').innerText = formatCurrency(total); document.getElementById('btn-charge-gen').disabled = !(val >= 5 && val <= 3000); }
@@ -370,10 +373,14 @@
         function checkCryptoValid() { const val = parseFloat(document.getElementById('crypto-val-input').value)||0; const addr = document.getElementById('crypto-addr-input').value; document.getElementById('btn-crypto-req').disabled = !(val > 0 && cryptoNetwork && cryptoToken && addr.length > 10); }
         function submitCrypto() {
             const val = parseFloat(document.getElementById('crypto-val-input').value)||0;
-            if (val < 150) { tg.showAlert("Mínimo R$ 150"); return; } if (val > userBalance) { tg.showAlert("Saldo insuficiente"); return; }
+            // TRAVA DE SALDO AQUI
+            if (val > userBalance) { tg.showAlert(`Saldo insuficiente. Disponível: ${formatCurrency(userBalance)}`); return; }
+            if (val < 150) { tg.showAlert("O valor mínimo para saque Cripto é R$ 150,00."); return; }
+            
+            if(window.Telegram?.WebApp?.HapticFeedback) window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
             document.getElementById('crypto-step-1').classList.add('hidden'); document.getElementById('crypto-step-2').classList.remove('hidden');
         }
-        function sendCryptoToSupport() { const val = document.getElementById('crypto-val-input').value; const addr = document.getElementById('crypto-addr-input').value; tg.openTelegramLink(`https://t.me/ZeusServicesOfc?text=🚀 CRIPTO%0ARede: ${cryptoNetwork}%0AToken: ${cryptoToken}%0AValor: R$ ${val}%0AAddr: ${addr}`); }
+        function sendCryptoToSupport() { const val = document.getElementById('crypto-val-input').value; const addr = document.getElementById('crypto-addr-input').value; tg.openTelegramLink(`https://t.me/ZeusServicesOfc?text=🚀 *SAQUE CRIPTO*%0ARede: ${cryptoNetwork}%0AToken: ${cryptoToken}%0AValor: R$ ${val}%0AAddr: ${addr}`); }
     </script>
 </body>
 </html>
