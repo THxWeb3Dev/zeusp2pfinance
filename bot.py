@@ -5,11 +5,8 @@ from threading import Thread
 import os
 
 # --- CONFIGURAÇÃO DE CREDENCIAIS ---
-# Seu Token (Já configurado)
+# Seu Token
 TOKEN = "8590639855:AAG4F62QVn2ljYiLaGA3G_vJtA4Fko7yHVk"
-
-# Seu ID de Admin (Para referência ou logs futuros)
-ADMIN_ID = 6719823918
 
 # ⚠️ IMPORTANTE: Cole aqui o link do seu site no GitHub Pages
 # Exemplo: "https://seu-usuario.github.io/zeus-p2p"
@@ -18,7 +15,7 @@ APP_URL = "https://thxweb3dev.github.io/zeusp2pfinance"
 # Inicializa o Bot
 bot = telebot.TeleBot(TOKEN)
 
-# --- SERVIDOR WEB PARA MANTER O BOT ONLINE 24H (NO RENDER) ---
+# --- SERVIDOR WEB PARA MANTER O BOT ONLINE 24H ---
 app = Flask('')
 
 @app.route('/')
@@ -35,32 +32,37 @@ def keep_alive():
 # --- LÓGICA DO BOT (/START) ---
 @bot.message_handler(commands=['start'])
 def enviar_boas_vindas(message):
+    # Coleta Nome e Username
     user_first_name = message.from_user.first_name
+    user_username = message.from_user.username
     
-    # Texto da mensagem de boas-vindas
+    # Formata a saudação: Nome | @Username (ou apenas Nome se não tiver user)
+    if user_username:
+        saudacao = f"Olá, <b>{user_first_name} | @{user_username}</b>!"
+    else:
+        saudacao = f"Olá, <b>{user_first_name}</b>!"
+
+    # Texto atualizado conforme solicitado
     texto = (
-        f"⚡ <b>Olá, {user_first_name}!</b>\n\n"
+        f"{saudacao}\n\n"
         "Seja bem-vindo ao <b>ZEUS⚡️P2P | Finance</b>.\n\n"
-        "Somos o futuro das finanças descentralizadas. "
-        
-        "Realize Depósitos, Cobranças e Saques via PIX. Pague Faturas e faça Saques via Cripto. Pague Boletos de até R$ 20.000,00 sem burocracias e sem KYC.\n\n"
-        
+        "Somos o futuro das finanças descentralizadas.\n\n"
+        "🔹 Realize Depósitos, Cobranças e Saques via PIX.\n"
+        "🔹 Liquide Faturas e faça Saques via Cripto.\n"
+        "🔹 Pague Boletos de até R$ 20.000,00.\n\n"
+        "<b>Tudo isso sem burocracias e sem KYC.</b>\n\n"
         "👇 <b>Clique abaixo para acessar o App:</b>"
     )
 
     # Criação do botão que abre o Mini App
     markup = InlineKeyboardMarkup()
-    # O botão WebApp precisa de HTTPS (GitHub Pages fornece isso)
-    botao_app = InlineKeyboardButton(text="📱 Acessar Gateway | Banking", web_app=WebAppInfo(url=APP_URL))
+    botao_app = InlineKeyboardButton(text="📱 Acessar ZEUS App", web_app=WebAppInfo(url=APP_URL))
     markup.add(botao_app)
 
     # Envia a mensagem
     bot.send_message(message.chat.id, texto, parse_mode="HTML", reply_markup=markup)
 
-    # (Opcional) Log no console do servidor quando alguém entra
-    print(f"🚀 Acesso de: {user_first_name} (ID: {message.from_user.id})")
-
 # --- INICIALIZAÇÃO ---
 if __name__ == "__main__":
-    keep_alive() # Inicia o servidor web invisível
-    bot.infinity_polling() # Inicia o bot do Telegram
+    keep_alive() 
+    bot.infinity_polling()
