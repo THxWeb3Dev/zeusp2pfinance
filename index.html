@@ -29,7 +29,7 @@
         .login-card { background: rgba(20, 20, 30, 0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 25px; margin-bottom: 20px; text-align: center; backdrop-filter: blur(10px); }
         .login-title { font-family: 'Rajdhani'; font-weight: 700; font-size: 1.2rem; margin-bottom: 20px; text-align: left; display: flex; align-items: center; gap: 10px; color: #fff; }
 
-        /* DASHBOARD - Correção de Z-Index para Clique */
+        /* DASHBOARD */
         .screen-header { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; }
         .nav-avatar { width: 42px; height: 42px; border-radius: 50%; background: #333; border: 2px solid var(--primary); background-image: url('https://ui-avatars.com/api/?name=User&background=0ABAB5&color=fff'); background-size: cover; }
         .stat-card-main { background: linear-gradient(180deg, rgba(0, 224, 150, 0.1), rgba(0,0,0,0)); border: 1px solid rgba(0, 224, 150, 0.3); border-radius: 24px; padding: 20px; margin: 0 20px 20px 20px; }
@@ -39,7 +39,7 @@
         .menu-btn { width: 55px; height: 55px; background: rgba(255,255,255,0.08); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: #fff; transition: 0.2s; border: 1px solid rgba(255,255,255,0.05); pointer-events: none; }
         .menu-item:active .menu-btn { background: rgba(10, 186, 181, 0.2); border-color: var(--primary); }
 
-        /* SECTIONS - Correção de Sobreposição */
+        /* SECTIONS */
         section { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow-y: auto; background: var(--bg-dark); }
         .screen-content { padding: 20px; padding-bottom: 80px; }
         
@@ -137,7 +137,7 @@
             </div>
             <div style="display:flex; gap:10px;">
                 <div onclick="openRules()" style="width:35px; height:35px; border-radius:50%; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fas fa-file-contract"></i></div>
-                <div onclick="tg.showAlert('Histórico indisponível.')" style="width:35px; height:35px; border-radius:50%; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fas fa-chart-pie"></i></div>
+                <div onclick="logoutApp()" style="width:35px; height:35px; border-radius:50%; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fas fa-sign-out-alt"></i></div>
             </div>
         </div>
         
@@ -271,10 +271,28 @@
         let userBalance = 0.00; // SALDO REAL INICIAL
         const networkTokens = { 'BTC': ['BTC'], 'BSC': ['BNB', 'USDT', 'USDC'], 'POL': ['POLYGON', 'USDT', 'USDC'], 'BASE': ['ETH', 'USDC'], 'ETH': ['ETHEREUM', 'USDT', 'USDC', 'DAI', 'USDE'], 'SOL': ['SOLANA', 'USDT', 'USDC'] };
 
-        // --- NAVEGAÇÃO SEGURA (FIXED) ---
+        // --- SISTEMA DE LOGIN E PERSISTÊNCIA ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedUser = localStorage.getItem('zeusUser');
+            if (savedUser) {
+                document.getElementById('dash-name').innerText = savedUser;
+                // Pula direto para o App
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('main-app').classList.remove('hidden');
+                document.getElementById('main-app').classList.add('fade-in');
+                currentScreen = 'main-app';
+            }
+        });
+
         function enterApp() {
             const userInput = document.getElementById('login-input').value;
-            if(userInput) document.getElementById('dash-name').innerText = userInput;
+            const passInput = document.getElementById('pass-input').value;
+            
+            if(!userInput) { tg.showAlert("Digite um usuário!"); return; }
+            
+            // Salva no LocalStorage
+            localStorage.setItem('zeusUser', userInput);
+            document.getElementById('dash-name').innerText = userInput;
             
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('main-app').classList.remove('hidden');
@@ -282,6 +300,12 @@
             currentScreen = 'main-app';
         }
 
+        function logoutApp() {
+            localStorage.removeItem('zeusUser');
+            location.reload(); // Recarrega para voltar ao login
+        }
+
+        // --- NAVEGAÇÃO SEGURA (FIXED) ---
         function backToMain() {
             // Limpeza total de telas anteriores
             document.querySelectorAll('section').forEach(el => {
@@ -365,7 +389,7 @@
                     document.getElementById('charge-step-2').classList.remove('hidden');
                     
                     document.getElementById('pix-copy-paste').value = qrCode;
-                    // QR Code via API de Imagem (Mais seguro que bibliotecas JS locais)
+                    // GERAÇÃO DE QR CODE VIA API EXTERNA (Infalível)
                     document.getElementById('qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrCode)}`;
                     
                     startPolling(txId, parseFloat(val));
