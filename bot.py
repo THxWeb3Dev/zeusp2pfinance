@@ -56,7 +56,7 @@ def enviar_boas_vindas(message):
 
     # Criação do botão que abre o Mini App
     markup = InlineKeyboardMarkup()
-    botao_app = InlineKeyboardButton(text="📱 Acessar ZEUS App", web_app=WebAppInfo(url=APP_URL))
+    botao_app = InlineKeyboardButton(text="🏦 Acessar Internet Banking", web_app=WebAppInfo(url=APP_URL))
     markup.add(botao_app)
 
     # Envia a mensagem
